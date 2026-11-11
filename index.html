@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyan" data-fx="full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Blueprint Event Management — Architects of Moments in Khulna, Bangladesh. Full-spectrum event engineering, 3D stage & AV rigging, corporate galas, concerts, and interactive CAD planning.">
+  <title>THE BLUEPRINT EVENT MANAGEMENT // Khulna, Bangladesh</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Space Grotesk, Orbitron, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Architectural Styles -->
+  <link rel="stylesheet" href="css/blueprint.css">
+</head>
+<body class="relative antialiased selection:bg-cyan-400 selection:text-slate-950 pb-16 lg:pb-0">
+
+  <!-- ==================== 0. BOOT PRELOADER ==================== -->
+  <div id="bpPreloader" class="fixed inset-0 z-[90] bg-[#030712] flex flex-col items-center justify-center p-6 text-center">
+    <svg viewBox="0 0 120 120" class="w-16 h-16 bp-svg-glow animate-pulse mb-4">
+      <polygon points="60,8 112,60 60,112 8,60" fill="none" stroke="#00f0ff" stroke-width="2" />
+      <path d="M28,82 L28,42 L60,72 L92,42 L92,82" fill="none" stroke="#7df9ff" stroke-width="5" />
+    </svg>
+    <div class="font-tech font-bold text-base tracking-[0.22em] text-cyan-300">THE BLUEPRINT</div>
+    <div class="font-mono-cad text-[11px] text-slate-400 mt-1">KHULNA, BANGLADESH</div>
+    <button id="skipPreloaderBtn" type="button" class="mt-4 px-4 py-1.5 rounded-full border border-cyan-400/40 font-mono-cad text-[11px] text-cyan-300 hover:bg-cyan-400/15">
+      ENTER STUDIO →
+    </button>
+  </div>
+
+  <!-- Interactive HiDPI CAD Background Canvas -->
+  <canvas id="cadBgCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
+
+  <!-- Floating Right-Edge Section Navigator (Ultrawide Desktop) -->
+  <aside aria-label="Section Navigator" class="hidden 2xl:flex fixed right-4 top-1/2 -translate-y-1/2 z-30 flex-col items-center gap-3 p-2.5 rounded-full bp-card">
+    <a href="#hero" data-target="hero" title="Home" class="bp-rail-dot is-active w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <a href="#architecture" data-target="architecture" title="About Us" class="bp-rail-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <a href="#leadership" data-target="leadership" title="Command Team" class="bp-rail-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <a href="#services" data-target="services" title="Services & Venues" class="bp-rail-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <a href="#blueprint-lab" data-target="blueprint-lab" title="Blueprint Lab" class="bp-rail-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <a href="#portfolio" data-target="portfolio" title="Portfolio" class="bp-rail-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <a href="#comms" data-target="comms" title="Contact HQ" class="bp-rail-dot w-2.5 h-2.5 rounded-full bg-white/25 transition-all"></a>
+    <div id="activeSectionLabel" class="font-mono-cad text-[9px] bp-accent-text pt-1 border-t border-current/20">00</div>
+  </aside>
+
+  <!-- ==================== 1. CLEAN SINGLE-ROW HEADER ==================== -->
+  <header id="mainHeader" class="sticky top-0 z-40 backdrop-blur-xl bg-black/80 border-b border-current/15 transition-shadow">
+    <div class="h-[2px] w-full bg-white/5 relative">
+      <div id="scrollProgressBar" class="h-full bg-cyan-400 transition-[width] duration-75" style="width:0%"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-[74px] flex items-center justify-between gap-4">
+      <a href="#hero" class="flex items-center gap-3 group shrink-0">
+        <div class="w-10 h-10 relative flex items-center justify-center">
+          <svg viewBox="0 0 120 120" class="w-full h-full bp-svg-glow transition-transform duration-300 group-hover:scale-105">
+            <polygon points="60,8 112,60 60,112 8,60" fill="rgba(10, 20, 36, 0.7)" stroke="currentColor" class="bp-accent-text" stroke-width="2" />
+            <path d="M28,80 L28,42 L60,72 L92,42 L92,80" fill="none" stroke="currentColor" class="bp-accent2-text" stroke-width="5.5" stroke-linecap="square" />
+            <circle cx="60" cy="34" r="2.8" fill="#ffffff" />
+          </svg>
+        </div>
+        <div>
+          <div class="font-tech font-black text-base sm:text-lg tracking-wider bp-accent-text bp-text-glow leading-none">THE BLUEPRINT</div>
+          <div class="font-tech font-bold text-[9px] tracking-[0.26em] bp-soft-text mt-1">EVENT MANAGEMENT</div>
+        </div>
+      </a>
+
+      <!-- Clean Primary Navigation -->
+      <nav aria-label="Primary Navigation" class="hidden xl:flex items-center gap-1 text-sm font-medium">
+        <a href="#architecture" class="bp-nav-link px-3 py-2 rounded-lg bp-soft-text hover:bp-accent-text hover:bg-white/5 transition-all">About</a>
+        <a href="#leadership" class="bp-nav-link px-3 py-2 rounded-lg bp-soft-text hover:bp-accent-text hover:bg-white/5 transition-all">Team</a>
+        <a href="#services" class="bp-nav-link px-3 py-2 rounded-lg bp-soft-text hover:bp-accent-text hover:bg-white/5 transition-all">Services</a>
+        <a href="#blueprint-lab" class="bp-nav-link px-3.5 py-2 rounded-lg border border-current/30 bg-white/5 bp-accent-text font-semibold hover:bg-white/10 transition-all">Blueprint Lab</a>
+        <a href="#portfolio" class="bp-nav-link px-3 py-2 rounded-lg bp-soft-text hover:bp-accent-text hover:bg-white/5 transition-all">Portfolio</a>
+        <a href="#comms" class="bp-nav-link px-3 py-2 rounded-lg bp-soft-text hover:bp-accent-text hover:bg-white/5 transition-all">Contact</a>
+      </nav>
+
+      <!-- Minimal Action Controls -->
+      <div class="flex items-center gap-2">
+        <button data-open-cmd type="button" title="Search & Quick Commands (Ctrl+K)" class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg border border-current/25 hover:border-current text-xs font-mono-cad bp-muted-text hover:bp-accent-text transition-colors">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <kbd class="hidden md:inline text-[10px] opacity-80">Ctrl+K</kbd>
+        </button>
+
+        <button data-open-settings type="button" title="Studio Theme, Sound & Tools" class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-current/25 hover:border-current text-xs font-mono-cad bp-muted-text hover:bp-accent-text transition-colors">
+          <i class="fa-solid fa-sliders"></i>
+          <span class="hidden md:inline">Studio</span>
+        </button>
+
+        <a href="#comms" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bp-btn-primary font-tech font-bold text-xs tracking-wider whitespace-nowrap shrink-0">
+          <span>Book Event</span>
+          <i class="fa-solid fa-arrow-right text-[11px]"></i>
+        </a>
+
+        <button id="mobileMenuBtn" aria-label="Open Navigation Menu" aria-expanded="false" class="xl:hidden p-2.5 rounded-lg border border-current/35 bp-accent-text hover:bg-white/10">
+          <i class="fa-solid fa-bars-staggered text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Clean Mobile Drawer -->
+    <div id="mobileMenu" class="hidden xl:hidden border-t border-current/20 bg-black/95 px-4 py-5 space-y-3 font-mono-cad text-xs">
+      <div class="flex items-center justify-between pb-2 border-b border-current/15">
+        <span class="bp-accent-text">KHULNA, BANGLADESH</span>
+        <button id="mobileMenuClose" type="button" class="px-2.5 py-1 rounded border border-current/30">CLOSE ✕</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <a href="#architecture" class="p-2.5 rounded-lg bg-white/5">About Us</a>
+        <a href="#leadership" class="p-2.5 rounded-lg bg-white/5">Command Team</a>
+        <a href="#services" class="p-2.5 rounded-lg bg-white/5">Services</a>
+        <a href="#blueprint-lab" class="p-2.5 rounded-lg border border-current/40 bp-accent-text font-bold">Blueprint Lab</a>
+        <a href="#portfolio" class="p-2.5 rounded-lg bg-white/5">Portfolio</a>
+        <a href="#comms" class="p-2.5 rounded-lg bg-white/5">Contact HQ</a>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <a href="tel:+8801788706868" class="py-2.5 rounded-lg border border-current/40 bp-accent-text text-center font-bold"><i class="fa-solid fa-phone mr-1"></i>01788-706868</a>
+        <a href="tel:+8801703700799" class="py-2.5 rounded-lg border border-current/40 bp-accent2-text text-center font-bold"><i class="fa-solid fa-phone mr-1"></i>01703-700799</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 2. CLEAN HERO SECTION ==================== -->
+  <section id="hero" data-sec-code="00 // HOME" class="relative min-h-[84vh] flex flex-col justify-between py-12 lg:py-16 overflow-hidden z-10 border-b border-current/15">
+    <div class="bp-scanline"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center my-auto">
+      <!-- Left Column -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-current/35 bg-white/5 bp-accent-text font-mono-cad text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>ARCHITECTS OF MOMENTS // KHULNA, BANGLADESH</span>
+        </div>
+
+        <h1 class="font-display font-bold text-4xl sm:text-5xl xl:text-[3.55rem] tracking-tight leading-[1.08]">
+          DRAFTING THE <span class="bp-accent-text bp-text-glow">VISION.</span><br>
+          ENGINEERING <span id="heroScrambleWord" class="bp-accent2-text bp-text-glow">THE EXPERIENCE.</span>
+        </h1>
+
+        <p class="bp-soft-text text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+          <strong class="font-semibold">The Blueprint Event Management</strong> bridges bold creative vision with precision stage architecture, audio-visual production, and seamless logistics across Khulna and nationwide.
+        </p>
+
+        <!-- Primary CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-1">
+          <a href="#blueprint-lab" class="bp-magnetic w-full sm:w-auto px-7 py-4 rounded-xl bp-btn-primary font-tech font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-3">
+            <i class="fa-solid fa-compass-drafting text-base"></i>
+            <span>OPEN BLUEPRINT LAB</span>
+          </a>
+          <button data-open-wizard type="button" class="bp-magnetic w-full sm:w-auto px-6 py-4 rounded-xl bp-btn-outline font-tech font-bold text-xs tracking-wider flex items-center justify-center gap-2.5">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>QUICK EVENT WIZARD</span>
+          </button>
+        </div>
+
+        <!-- Clean Dual Hotline Strip -->
+        <div class="bp-card bp-ticks rounded-2xl p-4 sm:p-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="flex items-center justify-between p-3 rounded-xl bg-black/30 border border-current/20">
+              <div class="text-left">
+                <div class="font-mono-cad text-[10px] bp-muted-text">HOTLINE 01 // PRIMARY</div>
+                <a href="tel:+8801788706868" class="font-tech font-bold text-sm hover:bp-accent-text">+880 1788-706868</a>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <a href="tel:+8801788706868" title="Call Hotline 1" class="w-8 h-8 rounded-lg bg-white/5 border border-current/30 bp-accent-text hover:bg-cyan-400 hover:text-slate-950 flex items-center justify-center transition-all"><i class="fa-solid fa-phone text-xs"></i></a>
+                <a href="https://wa.me/8801788706868" target="_blank" rel="noopener noreferrer" title="WhatsApp Hotline 1" class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 hover:bg-emerald-400 hover:text-slate-950 flex items-center justify-center transition-all"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                <button type="button" data-download-vcf="1" title="Save Contact (.vcf)" class="w-8 h-8 rounded-lg bg-white/5 border border-current/25 bp-muted-text hover:bp-accent-text flex items-center justify-center transition-all"><i class="fa-solid fa-address-card text-xs"></i></button>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-xl bg-black/30 border border-current/20">
+              <div class="text-left">
+                <div class="font-mono-cad text-[10px] bp-muted-text">HOTLINE 02 // COMMAND</div>
+                <a href="tel:+8801703700799" class="font-tech font-bold text-sm hover:bp-accent-text">+880 1703-700799</a>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <a href="tel:+8801703700799" title="Call Hotline 2" class="w-8 h-8 rounded-lg bg-white/5 border border-current/30 bp-accent2-text hover:bg-cyan-400 hover:text-slate-950 flex items-center justify-center transition-all"><i class="fa-solid fa-phone text-xs"></i></a>
+                <a href="https://wa.me/8801703700799" target="_blank" rel="noopener noreferrer" title="WhatsApp Hotline 2" class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 hover:bg-emerald-400 hover:text-slate-950 flex items-center justify-center transition-all"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                <button type="button" data-download-vcf="2" title="Save Contact (.vcf)" class="w-8 h-8 rounded-lg bg-white/5 border border-current/25 bp-muted-text hover:bp-accent-text flex items-center justify-center transition-all"><i class="fa-solid fa-address-card text-xs"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Clean Interactive Emblem -->
+      <div class="lg:col-span-5 flex flex-col items-center">
+        <div id="heroEmblemCard" class="w-full max-w-[420px] p-6 bp-card bp-ticks bp-spotlight rounded-2xl flex flex-col items-center">
+          <div class="mb-2 flex items-center gap-1.5 font-mono-cad text-[10px]">
+            <button type="button" data-emblem-mode="vector" class="bp-tab-btn is-active px-2.5 py-1 rounded-full border border-current/30 font-bold">CAD</button>
+            <button type="button" data-emblem-mode="wireframe" class="bp-tab-btn px-2.5 py-1 rounded-full border border-current/30">GRID</button>
+            <button type="button" data-emblem-mode="dmx" class="bp-tab-btn px-2.5 py-1 rounded-full border border-current/30">DMX</button>
+          </div>
+
+          <svg id="heroEmblemSvg" viewBox="0 0 400 340" class="w-full h-auto bp-svg-glow transition-transform duration-200">
+            <defs>
+              <linearGradient id="cyanBeam" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FFFFFF" />
+                <stop offset="50%" stop-color="#7DF9FF" />
+                <stop offset="100%" stop-color="#00B4D8" />
+              </linearGradient>
+              <linearGradient id="darkFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0D2538" stop-opacity="0.88" />
+                <stop offset="100%" stop-color="#040812" stop-opacity="0.95" />
+              </linearGradient>
+            </defs>
+            <g id="emblemDmxBeams" style="opacity:0; transition: opacity 0.35s ease;">
+              <polygon points="100,20 190,320 60,320" fill="rgba(0,240,255,0.16)" />
+              <polygon points="300,20 340,320 210,320" fill="rgba(245,158,11,0.14)" />
+              <polygon points="200,10 270,320 130,320" fill="rgba(125,249,255,0.18)" />
+            </g>
+            <g id="emblemWireframeOverlay" stroke="#00F0FF" stroke-width="0.6" opacity="0.28">
+              <line x1="25" y1="170" x2="375" y2="170" />
+              <line x1="200" y1="15" x2="200" y2="325" />
+              <circle cx="200" cy="170" r="138" fill="none" stroke-dasharray="4 4" />
+            </g>
+            <polygon points="200,28 332,170 200,308 68,170" fill="url(#darkFill)" stroke="#00F0FF" stroke-width="2" />
+            <polygon points="200,44 316,170 200,292 84,170" fill="none" stroke="#7DF9FF" stroke-width="1" opacity="0.7" />
+            <polygon points="200,60 300,170 200,276 100,170" fill="none" stroke="#00F0FF" stroke-width="0.8" stroke-dasharray="6 3" />
+            <g stroke="#7DF9FF" stroke-width="1.3" fill="none" opacity="0.9">
+              <polyline points="160,185 160,235 200,272 240,235 240,185" />
+              <polyline points="175,195 175,225 200,248 225,225 225,195" />
+            </g>
+            <polygon points="116,90 132,76 132,236 116,222" fill="url(#cyanBeam)" opacity="0.85" />
+            <polygon points="284,90 268,76 268,236 284,222" fill="url(#cyanBeam)" opacity="0.85" />
+            <polygon points="116,76 200,158 284,76 284,102 200,184 116,102" fill="url(#cyanBeam)" stroke="#FFFFFF" stroke-width="1.5" />
+            <polyline points="132,115 200,182 268,115" fill="none" stroke="#FFFFFF" stroke-width="2.5" />
+
+            <g class="cursor-pointer" data-emblem-node="precision"><circle cx="200" cy="28" r="9" fill="rgba(0,240,255,0.22)" stroke="#00F0FF" /><circle cx="200" cy="28" r="3.5" fill="#FFF" /></g>
+            <g class="cursor-pointer" data-emblem-node="rigging"><circle cx="68" cy="170" r="9" fill="rgba(0,240,255,0.22)" stroke="#00F0FF" /><circle cx="68" cy="170" r="3.5" fill="#FFF" /></g>
+            <g class="cursor-pointer" data-emblem-node="protocol"><circle cx="332" cy="170" r="9" fill="rgba(0,240,255,0.22)" stroke="#00F0FF" /><circle cx="332" cy="170" r="3.5" fill="#FFF" /></g>
+            <g class="cursor-pointer" data-emblem-node="command"><circle cx="200" cy="308" r="9" fill="rgba(245,158,11,0.25)" stroke="#F59E0B" /><circle cx="200" cy="308" r="3.5" fill="#FFF" /></g>
+          </svg>
+
+          <div class="text-center mt-1">
+            <div class="font-tech font-black text-2xl tracking-[0.14em] bp-accent2-text bp-text-glow">THE BLUEPRINT</div>
+            <div class="font-tech font-bold text-xs tracking-[0.28em] bp-accent-text mt-1">EVENT MANAGEMENT</div>
+          </div>
+          <div id="emblemNodeDetail" class="mt-3 w-full px-3 py-2 rounded-lg bg-black/25 font-mono-cad text-[10px] bp-muted-text text-center">
+            Click any corner node above to inspect our engineering pillars.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clean 4-Metric Ribbon -->
+    <div class="mt-10 border-t border-current/15 bg-black/25 py-5 px-4">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+        <div>
+          <div class="font-tech font-black text-2xl sm:text-3xl bp-accent-text" data-count-to="5000" data-count-suffix="+">0</div>
+          <div class="font-mono-cad text-[11px] bp-muted-text mt-1">MAX ARENA CAPACITY</div>
+        </div>
+        <div>
+          <div class="font-tech font-black text-2xl sm:text-3xl bp-accent2-text" data-count-to="100" data-count-suffix="%">0</div>
+          <div class="font-mono-cad text-[11px] bp-muted-text mt-1">BACKUP POWER REDUNDANCY</div>
+        </div>
+        <div>
+          <div class="font-tech font-black text-2xl sm:text-3xl bp-secondary-text" data-count-to="6" data-count-suffix=" LEADS">0</div>
+          <div class="font-mono-cad text-[11px] bp-muted-text mt-1">COMMAND TEAM</div>
+        </div>
+        <button type="button" data-open-features class="hover:opacity-85 transition-opacity">
+          <div class="font-tech font-black text-2xl sm:text-3xl text-emerald-400" data-count-to="107" data-count-suffix="+">0</div>
+          <div class="font-mono-cad text-[11px] bp-muted-text mt-1 underline decoration-dotted">INTERACTIVE JS TOOLS</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. [01. ABOUT US & 4-PHASE PROCESS] ==================== -->
+  <section id="architecture" data-sec-code="01 // ABOUT" class="py-20 lg:py-24 relative z-10 border-b border-current/15">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-14">
+
+      <div class="reveal-up flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text tracking-widest uppercase mb-2">// SECTION 01 : ABOUT US</div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl">
+            WE DON'T LEAVE MOMENTS TO CHANCE. <span class="bp-accent-text bp-text-glow">WE ENGINEER THEM.</span>
+          </h2>
+        </div>
+      </div>
+
+      <div class="reveal-up grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-7 bp-card bp-ticks rounded-2xl p-6 sm:p-8 space-y-5">
+          <div class="flex flex-wrap gap-2">
+            <button type="button" data-phil-tab="mission" class="bp-tab-btn is-active px-3.5 py-1.5 rounded-lg border border-current/25 font-mono-cad text-xs font-bold">PHILOSOPHY</button>
+            <button type="button" data-phil-tab="standards" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25 font-mono-cad text-xs">STANDARDS</button>
+            <button type="button" data-phil-tab="footprint" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25 font-mono-cad text-xs">KHULNA COVERAGE</button>
+          </div>
+
+          <div data-phil-panel="mission" class="space-y-4">
+            <h3 class="font-display font-bold text-2xl">Bold Creative Vision Meets Precision Execution</h3>
+            <p class="bp-soft-text text-sm sm:text-base leading-relaxed">
+              Every landmark event begins with a master plan. <strong>The Blueprint Event Management</strong> was founded in Khulna to transform ambitious concepts into seamlessly executed concerts, corporate galas, brand activations, and luxury celebrations.
+            </p>
+            <p class="bp-soft-text text-sm sm:text-base leading-relaxed">
+              Led by Founding Panel members <strong>Abdullah Bin Murshed Fattah</strong> and <strong>Nibir Guha Roy</strong> alongside our Executive Command team, we engineer every stage, sound check, lighting cue, and VIP pass with zero guesswork.
+            </p>
+          </div>
+
+          <div data-phil-panel="standards" class="hidden space-y-4">
+            <h3 class="font-display font-bold text-2xl">Zero-Failure Redundancy & Show Calling</h3>
+            <p class="bp-soft-text text-sm sm:text-base leading-relaxed">
+              Every production runs on pre-drafted CAD floorplans, 3-phase backup power readiness, ring-out acoustic soundchecks, and real-time cue-to-cue show direction.
+            </p>
+          </div>
+
+          <div data-phil-panel="footprint" class="hidden space-y-4">
+            <h3 class="font-display font-bold text-2xl">Khulna HQ & Nationwide Deployment</h3>
+            <p class="bp-soft-text text-sm sm:text-base leading-relaxed">
+              Serving Khulna Club, Hotel Castle Salam, City Inn, CSS Ava Center, KUET, Khulna University, and destination venues across Jessore, Mongla, and Dhaka.
+            </p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bp-card bp-ticks rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="font-mono-cad text-xs bp-accent-text font-bold pb-3 mb-4 border-b border-current/15">KHULNA HEADQUARTERS</div>
+            <ul class="space-y-3 font-mono-cad text-xs">
+              <li class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">AGENCY:</span><span class="font-bold">THE BLUEPRINT EVENT MGMT</span></li>
+              <li class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">BASE:</span><span class="bp-accent-text">KHULNA, BANGLADESH</span></li>
+              <li class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">FOUNDERS:</span><span class="bp-accent2-text text-right">A.B.M. FATTAH & N.G. ROY</span></li>
+              <li class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">HOTLINE 01:</span><a href="tel:+8801788706868" class="bp-accent-text hover:underline font-bold">+880 1788-706868</a></li>
+              <li class="flex justify-between py-1.5"><span class="bp-muted-text">HOTLINE 02:</span><a href="tel:+8801703700799" class="bp-accent2-text hover:underline font-bold">+880 1703-700799</a></li>
+            </ul>
+          </div>
+          <div class="p-3.5 rounded-xl bg-white/5 border border-current/20 text-xs bp-soft-text">
+            <strong class="bp-accent-text block font-tech mb-1">"YOUR VISION. OUR BLUEPRINT."</strong>
+            Precision planning and artistic live production across every scale.
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive 4-Phase Process -->
+      <div class="reveal-up space-y-5">
+        <div class="font-mono-cad text-xs bp-accent-text uppercase tracking-widest">// 4-PHASE EXECUTION PROCESS (CLICK TO VIEW DELIVERABLES)</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <button type="button" data-phase-step="1" class="bp-card bp-ticks rounded-xl p-5 text-left ring-2 transition-all">
+            <div class="flex justify-between items-center mb-2"><span class="font-tech font-bold text-xl bp-accent-text opacity-60">01</span><i class="fa-solid fa-compass-drafting bp-accent-text text-lg"></i></div>
+            <h4 class="font-tech font-bold text-sm mb-1">CONCEPT & CAD</h4>
+            <p class="text-xs bp-soft-text">Spatial floorplans, 3D stage renders & custom visual identity.</p>
+          </button>
+          <button type="button" data-phase-step="2" class="bp-card bp-ticks rounded-xl p-5 text-left transition-all">
+            <div class="flex justify-between items-center mb-2"><span class="font-tech font-bold text-xl bp-accent-text opacity-60">02</span><i class="fa-solid fa-bolt-lightning bp-accent-text text-lg"></i></div>
+            <h4 class="font-tech font-bold text-sm mb-1">STAGE & AV RIGGING</h4>
+            <p class="text-xs bp-soft-text">Box trussing, line-array audio, DMX lighting & P3 LED screens.</p>
+          </button>
+          <button type="button" data-phase-step="3" class="bp-card bp-ticks rounded-xl p-5 text-left transition-all">
+            <div class="flex justify-between items-center mb-2"><span class="font-tech font-bold text-xl bp-accent-text opacity-60">03</span><i class="fa-solid fa-id-badge bp-accent-text text-lg"></i></div>
+            <h4 class="font-tech font-bold text-sm mb-1">ACCESS & LOGISTICS</h4>
+            <p class="text-xs bp-soft-text">VIP passes, security perimeter, crowd flow & hospitality.</p>
+          </button>
+          <button type="button" data-phase-step="4" class="bp-card bp-ticks rounded-xl p-5 text-left transition-all">
+            <div class="flex justify-between items-center mb-2"><span class="font-tech font-bold text-xl bp-accent-text opacity-60">04</span><i class="fa-solid fa-tower-broadcast bp-accent-text text-lg"></i></div>
+            <h4 class="font-tech font-bold text-sm mb-1">LIVE SHOW CALLING</h4>
+            <p class="text-xs bp-soft-text">Real-time cue synchronization & on-ground command.</p>
+          </button>
+        </div>
+        <div id="phaseProtocolDetail" class="bp-card rounded-xl p-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-3 mb-3 border-b border-current/15">
+            <div class="font-tech font-bold text-sm bp-accent-text">PHASE 01 // CONCEPT & CAD DRAFTING</div>
+            <span class="font-mono-cad text-[11px] px-2.5 py-0.5 rounded bg-white/10">Turnaround: 48–72 Hours</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            <div class="p-2.5 rounded-lg bg-black/20 border border-current/15 text-xs flex items-center gap-2"><i class="fa-solid fa-check bp-accent-text"></i><span>3D Stage Render</span></div>
+            <div class="p-2.5 rounded-lg bg-black/20 border border-current/15 text-xs flex items-center gap-2"><i class="fa-solid fa-check bp-accent-text"></i><span>Scaled Floorplan</span></div>
+            <div class="p-2.5 rounded-lg bg-black/20 border border-current/15 text-xs flex items-center gap-2"><i class="fa-solid fa-check bp-accent-text"></i><span>Gate & Banner Key-Art</span></div>
+            <div class="p-2.5 rounded-lg bg-black/20 border border-current/15 text-xs flex items-center gap-2"><i class="fa-solid fa-check bp-accent-text"></i><span>Power & Truss Spec</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. [02. COMMAND ROSTER] ==================== -->
+  <section id="leadership" data-sec-code="02 // TEAM" class="py-20 lg:py-24 relative z-10 border-b border-current/15 bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
+
+      <div class="reveal-up flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text tracking-widest uppercase mb-2">// SECTION 02 : COMMAND ROSTER</div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl">THE ARCHITECTS BEHIND <span class="bp-accent-text bp-text-glow">THE BLUEPRINT</span></h2>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" data-open-calib-studio class="px-3.5 py-2 rounded-lg bp-btn-outline font-mono-cad text-xs font-bold flex items-center gap-2">
+            <i class="fa-solid fa-camera-retro"></i><span>EDIT PHOTOS</span>
+          </button>
+          <button type="button" id="teamViewGridBtn" class="bp-tab-btn is-active px-3 py-2 rounded-lg border border-current/25 font-mono-cad text-xs">CARDS</button>
+          <button type="button" id="teamViewOrgBtn" class="bp-tab-btn px-3 py-2 rounded-lg border border-current/25 font-mono-cad text-xs">ORG CHART</button>
+        </div>
+      </div>
+
+      <!-- Simple Team Filter -->
+      <div class="reveal-up flex flex-wrap gap-2 font-mono-cad text-xs">
+        <button type="button" data-team-filter="all" class="bp-tab-btn is-active px-3.5 py-1.5 rounded-lg border border-current/25 font-bold">ALL TEAM (06)</button>
+        <button type="button" data-team-filter="founder" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25">FOUNDING PANEL (02)</button>
+        <button type="button" data-team-filter="executive" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25">EXECUTIVE COMMAND (04)</button>
+      </div>
+
+      <!-- Cards View -->
+      <div id="teamGridWrap" class="space-y-12">
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="px-3 py-1 rounded bg-amber-500/20 border border-amber-400 text-amber-300 font-mono-cad text-xs font-bold">TIER 01 // FOUNDING PANEL</span>
+            <div class="h-px bg-gradient-to-r from-amber-400/50 to-transparent flex-1"></div>
+          </div>
+          <div id="foundersGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <span class="px-3 py-1 rounded bg-white/10 border border-current/40 bp-accent-text font-mono-cad text-xs font-bold">TIER 02 // EXECUTIVE MEMBERS</span>
+            <div class="h-px bg-gradient-to-r from-cyan-400/40 to-transparent flex-1"></div>
+          </div>
+          <div id="executivesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+      </div>
+
+      <!-- Org Chart View -->
+      <div id="orgTopologyView" class="hidden bp-card rounded-2xl p-6 sm:p-8">
+        <div class="font-mono-cad text-xs bp-accent-text mb-6 text-center">COMMAND CHAIN // KHULNA OPERATIONS</div>
+        <div class="max-w-4xl mx-auto space-y-6">
+          <div class="p-4 rounded-xl border-2 border-amber-400/60 bg-amber-500/10 text-center max-w-md mx-auto">
+            <div class="font-mono-cad text-[10px] text-amber-300">FOUNDING PANEL</div>
+            <div class="font-tech font-bold text-sm mt-1">Abdullah Bin Murshed Fattah & Nibir Guha Roy</div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-4 rounded-xl border border-current/25 bg-black/25 text-center">
+              <div class="font-mono-cad text-[10px] bp-accent2-text">LOGISTICS</div>
+              <div class="font-tech font-bold text-sm mt-1">Mashukul Islam</div>
+            </div>
+            <div class="p-4 rounded-xl border border-current/25 bg-black/25 text-center">
+              <div class="font-mono-cad text-[10px] bp-accent2-text">PROTOCOL</div>
+              <div class="font-tech font-bold text-sm mt-1">Alif Rahman</div>
+            </div>
+            <div class="p-4 rounded-xl border border-current/25 bg-black/25 text-center">
+              <div class="font-mono-cad text-[10px] bp-accent2-text">CREATIVE</div>
+              <div class="font-tech font-bold text-sm mt-1">Shommo Dip Saha</div>
+            </div>
+            <div class="p-4 rounded-xl border border-current/25 bg-black/25 text-center">
+              <div class="font-mono-cad text-[10px] bp-accent2-text">SECURITY</div>
+              <div class="font-tech font-bold text-sm mt-1">Ahnaf Shahriar Rafi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. [03. SERVICES & KHULNA VENUES] ==================== -->
+  <section id="services" data-sec-code="03 // SERVICES" class="py-20 lg:py-24 relative z-10 border-b border-current/15">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
+
+      <div class="reveal-up flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text tracking-widest uppercase mb-2">// SECTION 03 : SERVICES</div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl">FULL-SPECTRUM <span class="bp-accent-text bp-text-glow">EVENT CAPABILITIES</span></h2>
+        </div>
+        <div class="flex flex-wrap gap-2.5">
+          <button type="button" data-open-wizard class="px-4 py-2.5 rounded-xl bp-btn-primary font-tech text-xs font-bold flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i><span>3-STEP EVENT WIZARD</span>
+          </button>
+          <button type="button" data-open-compare class="px-4 py-2.5 rounded-xl bp-btn-outline font-tech text-xs font-bold flex items-center gap-2">
+            <i class="fa-solid fa-table-columns"></i><span>COMPARE FORMATS</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter + Search -->
+      <div class="reveal-up flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-wrap gap-2 font-mono-cad text-xs">
+          <button type="button" data-srv-filter="all" class="bp-tab-btn is-active px-3 py-1.5 rounded-lg border border-current/25 font-bold">ALL</button>
+          <button type="button" data-srv-filter="corporate" class="bp-tab-btn px-3 py-1.5 rounded-lg border border-current/25">CORPORATE</button>
+          <button type="button" data-srv-filter="concert" class="bp-tab-btn px-3 py-1.5 rounded-lg border border-current/25">CONCERTS</button>
+          <button type="button" data-srv-filter="av" class="bp-tab-btn px-3 py-1.5 rounded-lg border border-current/25">STAGE & AV</button>
+          <button type="button" data-srv-filter="branding" class="bp-tab-btn px-3 py-1.5 rounded-lg border border-current/25">BRANDING</button>
+          <button type="button" data-srv-filter="luxury" class="bp-tab-btn px-3 py-1.5 rounded-lg border border-current/25">LUXURY</button>
+        </div>
+        <div class="relative w-full md:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs bp-muted-text"></i>
+          <input id="serviceSearchInput" type="search" placeholder="Search services..." class="w-full pl-9 pr-4 py-2 rounded-lg bg-black/30 border border-current/25 text-xs focus:border-current focus:outline-none">
+        </div>
+      </div>
+
+      <div id="servicesMatrixGrid" class="reveal-up grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      <!-- Clean Khulna Venue Guide -->
+      <div class="reveal-up bp-card bp-ticks rounded-2xl p-6 sm:p-8 space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-current/15 pb-4">
+          <div>
+            <div class="font-mono-cad text-xs bp-accent-text">KHULNA VENUE GUIDE</div>
+            <h3 class="font-tech font-bold text-lg mt-0.5">CALIBRATE RIGGING & POWER FOR YOUR VENUE</h3>
+          </div>
+          <label class="inline-flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-lg border border-current/25 bg-black/25 text-xs font-mono-cad">
+            <input id="monsoonContingencyToggle" type="checkbox" class="accent-cyan-400 w-4 h-4">
+            <span>RAIN / MONSOON BACKUP</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div id="khulnaVenueList" class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2"></div>
+          <div class="lg:col-span-7 space-y-4">
+            <div id="khulnaVenueDetail" class="p-5 rounded-xl bg-black/30 border border-current/20"></div>
+            <div id="monsoonContingencyBox" class="hidden p-4 rounded-xl bg-sky-500/10 border border-sky-400/40 space-y-2">
+              <div class="font-tech font-bold text-xs text-sky-300"><i class="fa-solid fa-cloud-rain mr-1.5"></i>MONSOON CONTINGENCY READY</div>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bp-soft-text">
+                <li><i class="fa-solid fa-check text-sky-400 mr-1.5"></i>Waterproof Box-Truss Canopy</li>
+                <li><i class="fa-solid fa-check text-sky-400 mr-1.5"></i>Elevated Cable Ramps</li>
+                <li><i class="fa-solid fa-check text-sky-400 mr-1.5"></i>IP65 Stage Fixtures</li>
+                <li><i class="fa-solid fa-check text-sky-400 mr-1.5"></i>Covered Generator & FOH Tent</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 6. [04. BLUEPRINT LAB — TECHNICAL STUDIO (ZERO BUDGETING)] ==================== -->
+  <section id="blueprint-lab" data-sec-code="04 // LAB" class="py-20 lg:py-24 relative z-10 border-b border-current/15 bg-black/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
+
+      <div class="reveal-up flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text uppercase mb-2">// SECTION 04 : INTERACTIVE EVENT STUDIO</div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl">CONFIGURE & DESIGN <span class="bp-accent-text bp-text-glow">YOUR EVENT</span></h2>
+        </div>
+
+        <div class="flex flex-wrap gap-2 font-mono-cad text-xs">
+          <button type="button" data-lab-tab="spec" class="bp-tab-btn is-active px-4 py-2.5 rounded-xl border border-current/30 font-bold">01. SPEC BUILDER</button>
+          <button type="button" data-lab-tab="cad" class="bp-tab-btn px-4 py-2.5 rounded-xl border border-current/30 font-bold">02. STAGE CAD</button>
+          <button type="button" data-lab-tab="dmx" class="bp-tab-btn px-4 py-2.5 rounded-xl border border-current/30 font-bold">03. DMX & AUDIO</button>
+          <button type="button" data-lab-tab="tools" class="bp-tab-btn px-4 py-2.5 rounded-xl border border-current/30 font-bold">04. PASS & SHOW TOOLS</button>
+        </div>
+      </div>
+
+      <!-- TAB 01: PURE TECHNICAL SPEC BUILDER -->
+      <div data-lab-panel="spec" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-7 bp-card bp-ticks rounded-2xl p-6 sm:p-7 space-y-7">
+          <div class="flex items-center justify-between pb-3 border-b border-current/15">
+            <span class="font-mono-cad text-xs bp-accent-text font-bold">EVENT PARAMETERS</span>
+            <div class="flex gap-2 font-mono-cad text-[11px]">
+              <button id="randomizeLabBtn" type="button" class="px-2.5 py-1 rounded border border-current/25 hover:border-current"><i class="fa-solid fa-shuffle mr-1"></i>DEMO</button>
+              <button id="resetLabBtn" type="button" class="px-2.5 py-1 rounded border border-current/25 hover:border-current"><i class="fa-solid fa-rotate-left mr-1"></i>RESET</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-mono-cad text-xs bp-accent-text uppercase mb-3">01 // EVENT FORMAT</label>
+            <div id="labEventTypesWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          </div>
+
+          <div>
+            <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+              <label for="capacitySlider" class="font-mono-cad text-xs bp-accent-text uppercase">02 // EXPECTED GUESTS</label>
+              <div class="flex items-center gap-2">
+                <button id="guestMinusBtn" type="button" aria-label="Decrease guests" class="w-7 h-7 rounded border border-current/30 hover:bg-white/10 font-bold">-</button>
+                <input id="capacityNumInput" type="number" min="100" max="5000" step="50" value="600" aria-label="Guest count" class="w-20 px-2 py-1 rounded bg-black/40 border border-current/30 text-center font-mono-cad text-xs">
+                <button id="guestPlusBtn" type="button" aria-label="Increase guests" class="w-7 h-7 rounded border border-current/30 hover:bg-white/10 font-bold">+</button>
+                <span id="capacityReadout" class="font-tech font-bold text-base bp-accent2-text ml-1">600 GUESTS</span>
+              </div>
+            </div>
+            <input id="capacitySlider" type="range" min="100" max="5000" step="50" value="600" class="bp-range">
+            <div class="flex flex-wrap gap-1.5 mt-2.5 font-mono-cad text-[10px]">
+              <button type="button" data-guest-preset="250" class="px-2.5 py-1 rounded bg-white/5 border border-current/20 hover:border-current">250</button>
+              <button type="button" data-guest-preset="600" class="px-2.5 py-1 rounded bg-white/5 border border-current/20 hover:border-current">600</button>
+              <button type="button" data-guest-preset="1200" class="px-2.5 py-1 rounded bg-white/5 border border-current/20 hover:border-current">1,200</button>
+              <button type="button" data-guest-preset="2500" class="px-2.5 py-1 rounded bg-white/5 border border-current/20 hover:border-current">2,500</button>
+              <button type="button" data-guest-preset="5000" class="px-2.5 py-1 rounded bg-white/5 border border-current/20 hover:border-current">5,000</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <div class="font-mono-cad text-xs bp-accent-text mb-2">03 // SETTING</div>
+              <div class="grid grid-cols-3 gap-2 font-mono-cad text-[11px]">
+                <button type="button" data-env-btn="indoor" class="bp-tab-btn is-active py-2 rounded-lg border border-current/25">INDOOR</button>
+                <button type="button" data-env-btn="semi" class="bp-tab-btn py-2 rounded-lg border border-current/25">SEMI</button>
+                <button type="button" data-env-btn="outdoor" class="bp-tab-btn py-2 rounded-lg border border-current/25">OPEN AIR</button>
+              </div>
+            </div>
+            <div>
+              <div class="font-mono-cad text-xs bp-accent-text mb-2">04 // DURATION</div>
+              <div class="grid grid-cols-4 gap-1.5 font-mono-cad text-[11px]">
+                <button type="button" data-dur-btn="4" class="bp-tab-btn py-2 rounded-lg border border-current/25">4H</button>
+                <button type="button" data-dur-btn="6" class="bp-tab-btn is-active py-2 rounded-lg border border-current/25">6H</button>
+                <button type="button" data-dur-btn="8" class="bp-tab-btn py-2 rounded-lg border border-current/25">8H</button>
+                <button type="button" data-dur-btn="12" class="bp-tab-btn py-2 rounded-lg border border-current/25">12H+</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-mono-cad text-xs bp-accent-text uppercase mb-3">05 // PRODUCTION SUBSYSTEMS</label>
+            <div id="labSubsystemsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+          </div>
+
+          <!-- Save & Share Snapshots -->
+          <div class="pt-4 border-t border-current/15 space-y-3">
+            <div class="font-mono-cad text-xs bp-accent-text">SAVE OR SHARE THIS BLUEPRINT</div>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input id="snapshotNameInput" type="text" placeholder="Save draft name..." class="flex-1 px-3 py-2 rounded-lg bg-black/30 border border-current/25 text-xs focus:border-current focus:outline-none">
+              <button id="saveSnapshotBtn" type="button" class="px-4 py-2 rounded-lg bp-btn-outline font-mono-cad text-xs font-bold shrink-0">SAVE</button>
+              <button id="copyShareUrlBtn" type="button" class="px-4 py-2 rounded-lg border border-current/30 hover:border-current font-mono-cad text-xs shrink-0"><i class="fa-solid fa-link mr-1"></i>SHARE LINK</button>
+            </div>
+            <div id="savedBlueprintsList" class="space-y-1.5"></div>
+          </div>
+        </div>
+
+        <!-- Right Column: Clean Technical Telemetry (Zero Budgeting) -->
+        <div class="lg:col-span-5 bp-card bp-ticks rounded-2xl p-6 sm:p-7 space-y-5 lg:sticky lg:top-24">
+          <div class="flex items-center justify-between border-b border-current/15 pb-3">
+            <span class="font-mono-cad text-xs bp-accent-text font-bold">TECHNICAL BLUEPRINT SUMMARY</span>
+            <span id="cadTierLabel" class="px-2.5 py-0.5 rounded bg-cyan-400 text-slate-950 font-tech font-bold text-[10px]">TIER // EXECUTIVE</span>
+          </div>
+
+          <div class="bg-black/40 rounded-xl border border-current/20 p-4 flex flex-col items-center">
+            <svg viewBox="0 0 280 135" class="w-full h-32 bp-svg-glow">
+              <line x1="0" y1="68" x2="280" y2="68" stroke="currentColor" class="bp-accent-text" stroke-width="0.4" stroke-dasharray="3 3" opacity="0.4" />
+              <line x1="140" y1="0" x2="140" y2="135" stroke="currentColor" class="bp-accent-text" stroke-width="0.4" stroke-dasharray="3 3" opacity="0.4" />
+              <rect id="svgStageBox" x="76" y="16" width="128" height="34" fill="rgba(0, 240, 255, 0.14)" stroke="#00F0FF" stroke-width="1.8" />
+              <line x1="90" y1="22" x2="190" y2="22" stroke="#7DF9FF" stroke-width="3" />
+              <rect x="48" y="22" width="12" height="24" fill="none" stroke="#7DF9FF" stroke-width="1.2" />
+              <rect x="220" y="22" width="12" height="24" fill="none" stroke="#7DF9FF" stroke-width="1.2" />
+              <path d="M 62 62 Q 140 92 218 62" fill="none" stroke="#00F0FF" stroke-width="1" stroke-dasharray="4 2" opacity="0.7" />
+              <path d="M 42 86 Q 140 120 238 86" fill="none" stroke="#00F0FF" stroke-width="1" stroke-dasharray="4 2" opacity="0.45" />
+              <rect x="122" y="110" width="36" height="14" fill="rgba(125,249,255,0.2)" stroke="#7DF9FF" stroke-width="1" />
+              <text x="140" y="119" text-anchor="middle" fill="#FFF" font-family="JetBrains Mono" font-size="6">FOH CTRL</text>
+            </svg>
+            <div class="w-full flex justify-between font-mono-cad text-[10px] bp-accent-text mt-1">
+              <span id="cadStageLabel">STAGE_SPAN // 32 FT x 16 FT</span>
+              <span id="specEnvSummary">INDOOR • 6 HRS</span>
+            </div>
+          </div>
+
+          <div class="space-y-2.5 font-mono-cad text-xs">
+            <div class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">FORMAT:</span><span id="specType" class="bp-accent2-text font-semibold text-right"></span></div>
+            <div class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">POWER LOAD:</span><span id="specPower" class="bp-accent-text font-bold"></span></div>
+            <div class="flex justify-between py-1.5 border-b border-current/10"><span class="bp-muted-text">CREW TEAM:</span><span id="specCrew" class="font-bold"></span></div>
+          </div>
+
+          <div>
+            <div id="crewAllocationBar" class="h-2.5 w-full rounded-full overflow-hidden flex bg-white/10"></div>
+            <div id="crewAllocationLegend" class="flex flex-wrap gap-3 font-mono-cad text-[10px] bp-muted-text mt-2"></div>
+          </div>
+
+          <div id="specModulesList" class="flex flex-wrap gap-1.5"></div>
+
+          <div class="p-4 rounded-xl bg-black/30 border border-current/20 space-y-2">
+            <div class="font-mono-cad text-[11px] bp-accent-text font-bold">DEPLOYMENT READINESS</div>
+            <div id="techDeploymentMatrix" class="space-y-1.5 text-[11px] bp-soft-text"></div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="grid grid-cols-2 gap-2">
+              <button id="transmitWhatsappBtn1" type="button" class="py-3 px-3 rounded-lg bp-btn-primary font-tech font-bold text-[11px] flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp"></i><span>LINE 1: 01788-706868</span>
+              </button>
+              <button id="transmitWhatsappBtn2" type="button" class="py-3 px-3 rounded-lg bp-btn-outline font-tech font-bold text-[11px] flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp"></i><span>LINE 2: 01703-700799</span>
+              </button>
+            </div>
+            <div class="grid grid-cols-3 gap-2 font-mono-cad text-[10px]">
+              <button id="syncSpecToBriefBtn" type="button" class="py-2 rounded-lg border border-current/30 hover:border-current">ATTACH BRIEF</button>
+              <button id="copySpecBtn" type="button" class="py-2 rounded-lg border border-current/30 hover:border-current">COPY SPEC</button>
+              <button id="downloadProposalBtn" type="button" class="py-2 rounded-lg border border-current/30 hover:border-current">EXPORT .TXT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 02: STAGE CAD FLOORPLANNER -->
+      <div data-lab-panel="cad" class="hidden bp-card bp-ticks rounded-2xl p-5 sm:p-7 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-current/15">
+          <div>
+            <div class="font-mono-cad text-xs bp-accent-text">DRAG-AND-DROP VENUE FLOORPLANNER</div>
+            <div id="cadSelectedLabel" class="text-xs bp-soft-text mt-0.5 font-mono-cad"></div>
+          </div>
+          <div class="flex flex-wrap gap-2 font-mono-cad text-[11px]">
+            <button id="cadAutoLayoutBtn" type="button" class="px-3 py-1.5 rounded-lg bp-btn-primary font-bold"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>AUTO-LAYOUT</button>
+            <button id="cadUndoBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-current/25 hover:border-current"><i class="fa-solid fa-undo"></i></button>
+            <button id="cadRedoBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-current/25 hover:border-current"><i class="fa-solid fa-redo"></i></button>
+            <button id="cadExportPngBtn" type="button" class="px-3 py-1.5 rounded-lg bp-btn-outline font-bold"><i class="fa-solid fa-download mr-1"></i>EXPORT PNG</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-3 space-y-4">
+            <div class="font-mono-cad text-[11px] bp-accent-text">ADD ELEMENTS</div>
+            <div class="grid grid-cols-2 gap-2 font-mono-cad text-[11px]">
+              <button type="button" data-cad-add="stage" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ STAGE</button>
+              <button type="button" data-cad-add="led" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ LED WALL</button>
+              <button type="button" data-cad-add="speaker" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ SPEAKER</button>
+              <button type="button" data-cad-add="foh" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ FOH CTRL</button>
+              <button type="button" data-cad-add="vip" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ VIP TABLE</button>
+              <button type="button" data-cad-add="gate" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ GATE</button>
+              <button type="button" data-cad-add="barricade" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ BARRICADE</button>
+              <button type="button" data-cad-add="booth" class="p-2 rounded-lg bg-black/30 border border-current/25 hover:border-current">+ BOOTH</button>
+            </div>
+
+            <div class="pt-3 border-t border-current/15 space-y-2">
+              <div class="font-mono-cad text-[11px] bp-accent-text">EDIT SELECTED</div>
+              <div class="grid grid-cols-3 gap-1.5 font-mono-cad text-[10px]">
+                <button id="cadRotateBtn" type="button" class="py-1.5 rounded border border-current/25 hover:border-current">ROTATE</button>
+                <button id="cadScaleUpBtn" type="button" class="py-1.5 rounded border border-current/25 hover:border-current">SIZE +</button>
+                <button id="cadScaleDownBtn" type="button" class="py-1.5 rounded border border-current/25 hover:border-current">SIZE -</button>
+                <button id="cadDuplicateBtn" type="button" class="col-span-2 py-1.5 rounded border border-current/25 hover:border-current">DUPLICATE</button>
+                <button id="cadDeleteBtn" type="button" class="py-1.5 rounded border border-rose-400/40 text-rose-400">DELETE</button>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-current/15 space-y-1.5 text-xs font-mono-cad">
+              <label class="flex items-center gap-2 cursor-pointer"><input id="cadSnapToggle" type="checkbox" checked class="accent-cyan-400"><span>Snap to Grid</span></label>
+              <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked data-cad-layer="grid" class="accent-cyan-400"><span>Blueprint Grid</span></label>
+              <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked data-cad-layer="acoustics" class="accent-cyan-400"><span>Sound Cones</span></label>
+              <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked data-cad-layer="crowd" class="accent-cyan-400"><span>Audience Zone</span></label>
+              <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked data-cad-layer="dimensions" class="accent-cyan-400"><span>Dimensions</span></label>
+            </div>
+          </div>
+
+          <div class="lg:col-span-9 space-y-2">
+            <canvas id="cadDesignerCanvas" width="720" height="440" class="w-full h-auto rounded-xl border border-current/30 cursor-crosshair touch-none"></canvas>
+            <div class="flex justify-between font-mono-cad text-[11px] bp-muted-text">
+              <span id="cadDesignerCoords">X: 0ft | Y: 0ft</span>
+              <span>Drag items directly on canvas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 03: DMX LIGHTING & AUDIO -->
+      <div data-lab-panel="dmx" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 bp-card bp-ticks rounded-2xl p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="font-mono-cad text-xs bp-accent-text font-bold">DMX LIGHTING STAGE SIMULATOR</div>
+            <div class="flex flex-wrap gap-1.5 font-mono-cad text-[10px]">
+              <button type="button" data-dmx-preset="cyber" class="bp-tab-btn is-active px-2.5 py-1 rounded border border-current/25">CYAN</button>
+              <button type="button" data-dmx-preset="gold" class="bp-tab-btn px-2.5 py-1 rounded border border-current/25">GOLD</button>
+              <button type="button" data-dmx-preset="concert" class="bp-tab-btn px-2.5 py-1 rounded border border-current/25">FEST</button>
+              <button type="button" data-dmx-preset="emerald" class="bp-tab-btn px-2.5 py-1 rounded border border-current/25">EMERALD</button>
+            </div>
+          </div>
+          <canvas id="dmxStageCanvas" width="640" height="290" class="w-full h-auto rounded-xl border border-current/25"></canvas>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono-cad text-[11px]">
+            <label>BEAM SPREAD <input id="dmxSpreadRange" type="range" min="15" max="90" value="45" class="bp-range mt-1.5"></label>
+            <label>SPEED <input id="dmxSpeedRange" type="range" min="4" max="35" value="14" class="bp-range mt-1.5"></label>
+            <label>HAZE <input id="dmxHazeRange" type="range" min="10" max="90" value="35" class="bp-range mt-1.5"></label>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bp-card bp-ticks rounded-2xl p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="font-mono-cad text-xs bp-accent-text font-bold mb-1">LINE-ARRAY SOUNDCHECK</div>
+            <p class="text-xs bp-soft-text">Preview frequency test sweeps for venue audio calibration.</p>
+          </div>
+          <div class="h-36 p-4 rounded-xl bg-black/40 border border-current/20 flex items-end justify-between gap-2">
+            <div class="bp-eq-bar flex-1 rounded-t bg-cyan-400 transition-all duration-100" style="height:20%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-sky-400 transition-all duration-100" style="height:35%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-cyan-300 transition-all duration-100" style="height:50%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-sky-400 transition-all duration-100" style="height:30%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-cyan-400 transition-all duration-100" style="height:22%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-amber-400 transition-all duration-100" style="height:40%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-cyan-300 transition-all duration-100" style="height:25%"></div>
+            <div class="bp-eq-bar flex-1 rounded-t bg-sky-400 transition-all duration-100" style="height:18%"></div>
+          </div>
+          <div class="space-y-3">
+            <select id="soundcheckFreqSelect" aria-label="Select soundcheck test frequency" class="w-full px-3 py-2.5 rounded-lg bg-black/40 border border-current/25 font-mono-cad text-xs">
+              <option value="85">85 Hz — Sub-Bass Warmth</option>
+              <option value="220" selected>220 Hz — Vocal Clarity</option>
+              <option value="440">440 Hz — Standard Reference A4</option>
+              <option value="880">880 Hz — High-Frequency Throw</option>
+            </select>
+            <button id="soundcheckToggleBtn" type="button" class="w-full py-3 rounded-xl bp-btn-outline font-tech text-xs font-bold">
+              <i class="fa-solid fa-play mr-1.5"></i>START TEST TONE
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 04: PASS, RAFFLE & CUES -->
+      <div data-lab-panel="tools" class="hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-6 bp-card bp-ticks rounded-2xl p-6 space-y-4">
+            <div class="font-mono-cad text-xs bp-accent-text font-bold">VIP PASS DESIGNER</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+              <div class="space-y-2.5 text-xs">
+                <input id="passEventInput" type="text" value="KHULNA WINTER GALA 2026" placeholder="Event Name" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-current/25">
+                <input id="passHolderInput" type="text" value="A.B.M. FATTAH // VIP" placeholder="Guest Name" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-current/25">
+                <select id="passTierSelect" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-current/25">
+                  <option value="VIP_ALPHA">VIP ALPHA</option>
+                  <option value="ALL_ACCESS">ALL ACCESS // CREW</option>
+                  <option value="BACKSTAGE">ARTIST BACKSTAGE</option>
+                  <option value="MEDIA_PRESS">OFFICIAL PRESS</option>
+                </select>
+                <div class="flex gap-2">
+                  <input id="passSerialInput" type="text" value="BP-KHL-0842" class="flex-1 px-3 py-2 rounded-lg bg-black/30 border border-current/25 font-mono-cad">
+                  <button id="passRandomSerialBtn" type="button" class="px-3 py-2 rounded-lg border border-current/30 font-mono-cad">NEW</button>
+                </div>
+                <select id="passAccentSelect" class="w-full px-3 py-2 rounded-lg bg-black/30 border border-current/25">
+                  <option value="#00f0ff">Blueprint Cyan</option>
+                  <option value="#f59e0b">Imperial Gold</option>
+                  <option value="#10b981">Emerald Security</option>
+                  <option value="#fb7185">Concert Crimson</option>
+                </select>
+                <button id="passDownloadBtn" type="button" class="w-full py-2.5 rounded-lg bp-btn-primary font-tech text-xs font-bold">
+                  <i class="fa-solid fa-download mr-1.5"></i>EXPORT PASS PNG
+                </button>
+              </div>
+              <canvas id="vipPassPreviewCanvas" width="270" height="360" class="w-full max-w-[230px] mx-auto rounded-xl border border-current/30 shadow-xl"></canvas>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-6">
+            <div class="bp-card bp-ticks rounded-2xl p-6 space-y-3">
+              <div class="font-mono-cad text-xs bp-accent-text font-bold">DIGITAL RAFFLE DRAW</div>
+              <textarea id="rafflePoolInput" rows="2" placeholder="Enter ticket numbers..." class="w-full px-3 py-2 rounded-lg bg-black/30 border border-current/25 font-mono-cad text-xs">BP-101, BP-102, BP-103, BP-104, BP-105, BP-106, BP-107, BP-108</textarea>
+              <div class="flex flex-col sm:flex-row items-center gap-3">
+                <div id="raffleDrawReadout" class="flex-1 w-full py-3 px-4 rounded-xl bg-black/45 border border-current/35 font-tech font-bold text-lg text-center bp-accent-text">READY TO DRAW</div>
+                <button id="raffleRunBtn" type="button" class="w-full sm:w-auto px-5 py-3.5 rounded-xl bp-btn-primary font-tech text-xs font-bold shrink-0">RUN DRAW</button>
+              </div>
+              <div id="raffleWinnerHistory" class="space-y-1"></div>
+            </div>
+
+            <div class="bp-card bp-ticks rounded-2xl p-6 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-mono-cad text-xs bp-accent-text font-bold">READINESS CHECKLIST</span>
+                <span id="readinessPctReadout" class="font-tech font-bold text-xs text-emerald-400">50% READY</span>
+              </div>
+              <div id="readinessChecklistWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bp-card bp-ticks rounded-2xl p-6 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="font-mono-cad text-xs bp-accent-text font-bold">RUN-OF-SHOW TIMELINE BUILDER</div>
+            <button id="exportCuesCsvBtn" type="button" class="px-4 py-2 rounded-lg bp-btn-outline font-mono-cad text-xs font-bold"><i class="fa-solid fa-file-csv mr-1.5"></i>EXPORT .CSV</button>
+          </div>
+          <form id="addCueForm" class="grid grid-cols-2 sm:grid-cols-6 gap-2">
+            <input id="newCueTime" type="time" value="20:30" class="px-3 py-2 rounded-lg bg-black/30 border border-current/25 text-xs">
+            <select id="newCueDept" class="px-3 py-2 rounded-lg bg-black/30 border border-current/25 text-xs">
+              <option value="STAGE">STAGE</option><option value="LIGHTING">LIGHTING</option><option value="AUDIO">AUDIO</option><option value="VIP">VIP</option><option value="SECURITY">SECURITY</option>
+            </select>
+            <input id="newCueDur" type="number" min="5" max="240" value="30" placeholder="Min" class="px-3 py-2 rounded-lg bg-black/30 border border-current/25 text-xs">
+            <input id="newCueTitle" type="text" required placeholder="Cue description..." class="col-span-2 px-3 py-2 rounded-lg bg-black/30 border border-current/25 text-xs">
+            <button type="submit" class="py-2 rounded-lg bp-btn-primary font-tech text-xs font-bold">+ ADD</button>
+          </form>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-current/20 font-mono-cad text-[10px] bp-muted-text">
+                  <th class="py-2 px-2">TIME</th><th class="py-2 px-2">DEPT</th><th class="py-2 px-2">CUE</th><th class="py-2 px-2">DUR</th><th class="py-2 px-2 text-right">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="cueTimelineBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 7. [05. PORTFOLIO & REVIEWS] ==================== -->
+  <section id="portfolio" data-sec-code="05 // PORTFOLIO" class="py-20 lg:py-24 relative z-10 border-b border-current/15">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
+
+      <div class="reveal-up flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text tracking-widest uppercase mb-2">// SECTION 05 : PORTFOLIO</div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl">EXECUTED <span class="bp-accent-text bp-text-glow">EVENT ARCHIVE</span></h2>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-400/40 font-mono-cad text-xs text-amber-300">
+            <i class="fa-solid fa-star mr-1.5"></i>SHORTLIST: <strong id="shortlistCountBadge">0</strong>
+          </span>
+          <div class="flex gap-1 font-mono-cad text-xs">
+            <button id="portViewGridBtn" type="button" class="bp-tab-btn is-active px-3 py-1.5 rounded-lg border border-current/25">GRID</button>
+            <button id="portViewListBtn" type="button" class="bp-tab-btn px-3 py-1.5 rounded-lg border border-current/25">LIST</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-up flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-wrap gap-2 font-mono-cad text-xs">
+          <button type="button" data-port-filter="all" class="bp-tab-btn is-active px-3.5 py-1.5 rounded-lg border border-current/25 font-bold">ALL (03)</button>
+          <button type="button" data-port-filter="cultural" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25">CULTURAL</button>
+          <button type="button" data-port-filter="corporate" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25">CORPORATE</button>
+          <button type="button" data-port-filter="community" class="bp-tab-btn px-3.5 py-1.5 rounded-lg border border-current/25">COMMUNITY</button>
+        </div>
+        <div class="relative w-full md:w-64">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs bp-muted-text"></i>
+          <input id="portfolioSearchInput" type="search" placeholder="Filter projects..." class="w-full pl-9 pr-4 py-2 rounded-lg bg-black/30 border border-current/25 text-xs focus:border-current focus:outline-none">
+        </div>
+      </div>
+
+      <div id="portfolioGrid" class="reveal-up"></div>
+
+      <!-- Clean Client Testimonials -->
+      <div id="testimonialCarouselBox" class="reveal-up bp-card bp-ticks rounded-2xl p-6 sm:p-10 text-center space-y-5">
+        <div id="testimonialRating" class="font-mono-cad text-xs bp-accent-text">5.0 // VERIFIED OPS</div>
+        <blockquote id="testimonialQuote" class="font-display text-lg sm:text-2xl max-w-3xl mx-auto leading-relaxed"></blockquote>
+        <div>
+          <div id="testimonialAuthor" class="font-tech font-bold text-sm"></div>
+          <div id="testimonialOrg" class="font-mono-cad text-xs bp-muted-text mt-0.5"></div>
+        </div>
+        <div class="flex items-center justify-center gap-4 pt-2">
+          <button id="testimonialPrevBtn" type="button" aria-label="Previous review" class="w-9 h-9 rounded-full border border-current/30 hover:border-current"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+          <div id="testimonialDots" class="flex items-center gap-2"></div>
+          <button id="testimonialNextBtn" type="button" aria-label="Next review" class="w-9 h-9 rounded-full border border-current/30 hover:border-current"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 8. [06. CONTACT KHULNA HQ & FAQ] ==================== -->
+  <section id="comms" data-sec-code="06 // CONTACT" class="py-20 lg:py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 space-y-16">
+
+      <div class="reveal-up grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left Column: Hotlines, Sectors & Date Checker -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bp-card bp-ticks rounded-2xl p-6 space-y-5">
+            <div>
+              <div class="font-mono-cad text-[11px] bp-accent-text mb-1">HOTLINE 01 // PRIMARY</div>
+              <div class="font-tech font-black text-2xl mb-3">+880 1788-706868</div>
+              <div class="grid grid-cols-3 gap-2">
+                <a href="tel:+8801788706868" class="py-2.5 rounded-lg bp-btn-primary font-tech font-bold text-[11px] text-center"><i class="fa-solid fa-phone mr-1"></i>CALL</a>
+                <a href="https://wa.me/8801788706868" target="_blank" rel="noopener noreferrer" class="py-2.5 rounded-lg bp-btn-outline font-tech font-bold text-[11px] text-center"><i class="fa-brands fa-whatsapp mr-1"></i>CHAT</a>
+                <button type="button" data-copy-phone="+8801788706868" class="py-2.5 rounded-lg border border-current/30 font-mono-cad text-[11px]">COPY</button>
+              </div>
+            </div>
+
+            <div class="pt-5 border-t border-current/15">
+              <div class="font-mono-cad text-[11px] bp-accent2-text mb-1">HOTLINE 02 // COMMAND</div>
+              <div class="font-tech font-black text-2xl mb-3">+880 1703-700799</div>
+              <div class="grid grid-cols-3 gap-2">
+                <a href="tel:+8801703700799" class="py-2.5 rounded-lg bp-btn-primary font-tech font-bold text-[11px] text-center"><i class="fa-solid fa-phone mr-1"></i>CALL</a>
+                <a href="https://wa.me/8801703700799" target="_blank" rel="noopener noreferrer" class="py-2.5 rounded-lg bp-btn-outline font-tech font-bold text-[11px] text-center"><i class="fa-brands fa-whatsapp mr-1"></i>CHAT</a>
+                <button type="button" data-copy-phone="+8801703700799" class="py-2.5 rounded-lg border border-current/30 font-mono-cad text-[11px]">COPY</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bp-card bp-ticks rounded-2xl p-6 space-y-3">
+            <div class="font-mono-cad text-xs bp-accent-text font-bold">EVENT DATE READINESS CHECK</div>
+            <input id="leadTimeDateInput" type="date" aria-label="Target Event Date" class="w-full px-3.5 py-2.5 rounded-lg bg-black/30 border border-current/30 text-xs font-mono-cad">
+            <div id="leadTimeReadout" class="p-3 rounded-xl bg-black/30 border border-current/15"></div>
+          </div>
+
+          <div class="bp-card bp-ticks rounded-2xl p-6 space-y-3">
+            <div class="font-mono-cad text-xs bp-accent-text font-bold">KHULNA COVERAGE ZONES</div>
+            <div class="grid grid-cols-2 gap-1.5 font-mono-cad text-[10px]">
+              <button type="button" data-khulna-zone="central" class="bp-tab-btn is-active p-2 rounded-lg border border-current/25 text-left">CENTRAL KHULNA</button>
+              <button type="button" data-khulna-zone="moylapota" class="bp-tab-btn p-2 rounded-lg border border-current/25 text-left">MOYLAPOTA</button>
+              <button type="button" data-khulna-zone="rupsha" class="bp-tab-btn p-2 rounded-lg border border-current/25 text-left">CSS AVA / RUPSHA</button>
+              <button type="button" data-khulna-zone="fulbari" class="bp-tab-btn p-2 rounded-lg border border-current/25 text-left">KUET / FULBARI</button>
+              <button type="button" data-khulna-zone="regional" class="bp-tab-btn col-span-2 p-2 rounded-lg border border-current/25 text-center">JESSORE • MONGLA • NATIONWIDE</button>
+            </div>
+            <div id="khulnaZoneReadout" class="p-3.5 rounded-xl bg-black/30 border border-current/20">
+              <div class="font-mono-cad text-[10px] bp-accent-text">22.8456° N, 89.5403° E</div>
+              <div class="font-tech font-bold text-sm mt-0.5">CENTRAL KHULNA // HQ SECTOR</div>
+              <div class="text-xs bp-soft-text mt-1">Key Venues: Khulna Club, Hotel Castle Salam, Circuit House</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Clean Project Brief Form -->
+        <div class="lg:col-span-7 bp-card bp-ticks rounded-2xl p-6 sm:p-8">
+          <div class="flex items-center justify-between border-b border-current/15 pb-4 mb-5">
+            <div>
+              <div class="font-mono-cad text-xs bp-accent-text">DIRECT CONSULTATION</div>
+              <h3 class="font-tech font-bold text-xl">SEND PROJECT BRIEF</h3>
+            </div>
+            <button id="exportBriefTxtBtn" type="button" class="px-3 py-1.5 rounded-lg border border-current/30 font-mono-cad text-[11px]">SAVE .TXT</button>
+          </div>
+
+          <form id="projectBriefForm" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="clientName" class="block font-mono-cad text-xs bp-muted-text mb-1.5">YOUR NAME *</label>
+                <input id="clientName" type="text" required placeholder="Full name" class="w-full px-4 py-3 rounded-xl bg-black/35 border border-current/25 text-sm focus:border-current focus:outline-none">
+              </div>
+              <div>
+                <label for="clientPhone" class="block font-mono-cad text-xs bp-muted-text mb-1.5">PHONE / WHATSAPP *</label>
+                <input id="clientPhone" type="tel" required placeholder="+880 1XXX-XXXXXX" class="w-full px-4 py-3 rounded-xl bg-black/35 border border-current/25 text-sm focus:border-current focus:outline-none">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="clientEventType" class="block font-mono-cad text-xs bp-muted-text mb-1.5">EVENT TYPE</label>
+                <select id="clientEventType" class="w-full px-4 py-3 rounded-xl bg-black/35 border border-current/25 text-sm focus:border-current focus:outline-none">
+                  <option value="Corporate Gala / Club Night">Corporate Gala / Club Night</option>
+                  <option value="Live Concert / Cultural Fest">Live Concert / Cultural Fest</option>
+                  <option value="Brand Launch / Activation">Brand Launch / Activation</option>
+                  <option value="Bespoke Wedding / Luxury Gala">Bespoke Wedding / Luxury Gala</option>
+                  <option value="Custom Stage / AV Production">Custom Stage / AV Production</option>
+                </select>
+              </div>
+              <div>
+                <label for="targetHotline" class="block font-mono-cad text-xs bp-muted-text mb-1.5">SEND TO HOTLINE</label>
+                <select id="targetHotline" class="w-full px-4 py-3 rounded-xl bg-black/35 border border-current/25 font-mono-cad text-sm bp-accent-text focus:border-current focus:outline-none">
+                  <option value="8801788706868">Line 01: +880 1788-706868</option>
+                  <option value="8801703700799">Line 02: +880 1703-700799</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="clientVenue" class="block font-mono-cad text-xs bp-muted-text mb-1.5">VENUE & TARGET DATE</label>
+              <input id="clientVenue" type="text" placeholder="e.g., Khulna Club — Dec 2026" class="w-full px-4 py-3 rounded-xl bg-black/35 border border-current/25 text-sm focus:border-current focus:outline-none">
+            </div>
+
+            <div>
+              <div class="flex justify-between font-mono-cad text-xs bp-muted-text mb-1.5">
+                <label for="clientMessage">EVENT DETAILS</label>
+                <span id="briefMsgCount">0 / 1000</span>
+              </div>
+              <textarea id="clientMessage" rows="3" maxlength="1000" placeholder="Guest count, stage, lighting, branding, or full event requirements..." class="w-full px-4 py-3 rounded-xl bg-black/35 border border-current/25 text-sm focus:border-current focus:outline-none"></textarea>
+            </div>
+
+            <div class="p-3 rounded-xl bg-black/30 border border-current/20 space-y-1">
+              <label class="flex items-center gap-2 text-xs font-mono-cad cursor-pointer">
+                <input id="attachLabSpecChk" type="checkbox" checked class="accent-cyan-400">
+                <span class="bp-accent-text">Attach Blueprint Lab technical specs</span>
+              </label>
+              <div id="briefAttachedPreview" class="text-[11px] font-mono-cad bp-muted-text"></div>
+            </div>
+
+            <button type="submit" class="w-full py-4 px-5 rounded-xl bp-btn-primary font-tech font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2.5">
+              <i class="fa-solid fa-satellite-dish shrink-0"></i>
+              <span>SEND BRIEF VIA WHATSAPP</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Clean Searchable FAQ -->
+      <div class="reveal-up max-w-4xl mx-auto space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div class="font-mono-cad text-xs bp-accent-text uppercase">// FREQUENTLY ASKED QUESTIONS</div>
+            <h3 class="font-display font-bold text-2xl mt-1">PLANNING & TECHNICAL FAQ</h3>
+          </div>
+          <div class="flex flex-wrap gap-1.5 font-mono-cad text-[10px]">
+            <button type="button" data-faq-cat="all" class="bp-tab-btn is-active px-2.5 py-1.5 rounded border border-current/25">ALL</button>
+            <button type="button" data-faq-cat="booking" class="bp-tab-btn px-2.5 py-1.5 rounded border border-current/25">BOOKING</button>
+            <button type="button" data-faq-cat="technical" class="bp-tab-btn px-2.5 py-1.5 rounded border border-current/25">TECH AV</button>
+            <button type="button" data-faq-cat="venues" class="bp-tab-btn px-2.5 py-1.5 rounded border border-current/25">VENUES</button>
+          </div>
+        </div>
+        <input id="faqSearchInput" type="search" placeholder="Search questions..." class="w-full px-4 py-2.5 rounded-xl bg-black/30 border border-current/25 text-xs focus:border-current focus:outline-none">
+        <div id="faqAccordionList" class="space-y-2.5"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 9. CLEAN FOOTER ==================== -->
+  <footer class="border-t border-current/15 bg-black/50 py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <div class="font-tech font-bold text-sm tracking-wider">THE BLUEPRINT EVENT MANAGEMENT</div>
+        <div class="font-mono-cad text-[11px] bp-muted-text mt-1">KHULNA, BANGLADESH // +880 1788-706868 | +880 1703-700799</div>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-3 font-mono-cad text-xs">
+        <button type="button" data-open-settings class="px-3 py-1.5 rounded-lg border border-current/25 hover:border-current bp-accent-text">STUDIO SETTINGS</button>
+        <button type="button" data-open-shortcuts class="px-3 py-1.5 rounded-lg border border-current/25 hover:border-current">SHORTCUTS (?)</button>
+        <button type="button" data-print-blueprint class="px-3 py-1.5 rounded-lg border border-current/25 hover:border-current">PRINT</button>
+      </div>
+      <div class="font-mono-cad text-xs bp-muted-text text-center md:text-right">
+        <div>FOUNDING PANEL: ABDULLAH BIN MURSHED FATTAH & NIBIR GUHA ROY</div>
+        <div class="bp-accent-text text-[11px] mt-0.5">© 2026 THE BLUEPRINT EVENT MANAGEMENT.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== FLOATING CONTROLS ==================== -->
+  <div id="bpToastStack" class="fixed bottom-36 lg:bottom-6 left-4 right-4 sm:right-auto sm:left-6 z-[70] space-y-2 pointer-events-auto"></div>
+
+  <button id="backToTopBtn" type="button" aria-label="Back to top" class="fixed bottom-36 lg:bottom-24 right-5 z-40 w-11 h-11 rounded-full bp-card flex items-center justify-center opacity-0 pointer-events-none translate-y-3 transition-all duration-300">
+    <svg viewBox="0 0 40 40" class="w-11 h-11 -rotate-90 absolute inset-0">
+      <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+      <circle id="backToTopRing" cx="20" cy="20" r="18" fill="none" stroke="currentColor" class="bp-accent-text" stroke-width="2.2" stroke-dasharray="113.1" stroke-dashoffset="113.1" />
+    </svg>
+    <i class="fa-solid fa-arrow-up text-xs bp-accent-text"></i>
+  </button>
+
+  <div id="floatingConcierge" class="fixed bottom-20 lg:bottom-6 right-5 z-50">
+    <div id="conciergeChatPanel" class="hidden mb-3 w-80 sm:w-96 bp-card bp-ticks rounded-2xl overflow-hidden shadow-2xl">
+      <div class="px-4 py-3 bg-black/50 border-b border-current/20 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-tech font-bold text-xs bp-accent-text">BLUEPRINT ASSISTANT</span>
+        </div>
+        <button id="conciergeCloseBtn" type="button" aria-label="Close assistant" class="text-xs bp-muted-text hover:bp-accent-text"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="conciergeMessagesLog" class="p-3.5 h-52 overflow-y-auto space-y-2.5">
+        <div class="mr-6 p-2.5 rounded-xl rounded-bl-none bg-black/40 border border-current/20 text-xs bp-soft-text">
+          Hello! Ask me about <strong>Khulna venues</strong>, <strong>hotlines</strong>, <strong>stage CAD tools</strong>, or <strong>Founding Panel</strong>.
+        </div>
+      </div>
+      <div class="px-3 py-2 border-t border-current/15 flex flex-wrap gap-1.5">
+        <button type="button" data-conc-prompt="What are your Khulna hotlines?" class="px-2 py-1 rounded bg-white/5 border border-current/20 font-mono-cad text-[10px]">Hotlines</button>
+        <button type="button" data-conc-prompt="Which Khulna venues do you cover?" class="px-2 py-1 rounded bg-white/5 border border-current/20 font-mono-cad text-[10px]">Venues</button>
+        <button type="button" data-conc-prompt="How do I build a proposal?" class="px-2 py-1 rounded bg-white/5 border border-current/20 font-mono-cad text-[10px]">Proposal</button>
+        <button type="button" data-conc-prompt="Who is the Founding Panel?" class="px-2 py-1 rounded bg-white/5 border border-current/20 font-mono-cad text-[10px]">Founders</button>
+      </div>
+      <form id="conciergeChatForm" class="p-2.5 border-t border-current/15 flex gap-2">
+        <input id="conciergeChatInput" type="text" placeholder="Ask a question..." class="flex-1 px-3 py-1.5 rounded-lg bg-black/40 border border-current/25 text-xs focus:outline-none">
+        <button type="submit" class="px-3 py-1.5 rounded-lg bp-btn-primary text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+      </form>
+    </div>
+
+    <button id="conciergeToggleBtn" type="button" class="px-4 py-3 rounded-full bp-btn-primary font-tech font-bold text-xs flex items-center gap-2 shadow-2xl">
+      <i class="fa-solid fa-comment-dots"></i>
+      <span class="hidden sm:inline">HELP</span>
+    </button>
+  </div>
+
+  <nav id="mobileBottomBar" aria-label="Mobile Quick Dock" class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-black/95 backdrop-blur-lg border-t border-current/25 grid grid-cols-4 font-mono-cad text-[10px]">
+    <a href="tel:+8801788706868" class="py-2.5 flex flex-col items-center gap-1 bp-accent-text"><i class="fa-solid fa-phone text-sm"></i><span>CALL HQ</span></a>
+    <a href="https://wa.me/8801788706868" target="_blank" rel="noopener noreferrer" class="py-2.5 flex flex-col items-center gap-1 text-emerald-400"><i class="fa-brands fa-whatsapp text-sm"></i><span>WHATSAPP</span></a>
+    <a href="#blueprint-lab" class="py-2.5 flex flex-col items-center gap-1 bp-accent2-text"><i class="fa-solid fa-sliders text-sm"></i><span>LAB</span></a>
+    <button data-open-settings type="button" class="py-2.5 flex flex-col items-center gap-1 bp-soft-text"><i class="fa-solid fa-gear text-sm"></i><span>STUDIO</span></button>
+  </nav>
+
+  <!-- ==================== MODALS ==================== -->
+  <!-- Studio Settings Modal (Cleanly consolidates Themes, FX, Sound, Font Scale, Clock & JS Explorer) -->
+  <div id="studioSettingsModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-md bp-card bp-ticks rounded-2xl p-6 space-y-5 relative">
+      <div class="flex justify-between items-center border-b border-current/15 pb-3">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text">STUDIO PREFERENCES</div>
+          <h3 class="font-tech font-bold text-base">APPEARANCE & CONTROLS</h3>
+        </div>
+        <button type="button" data-close-modal="studioSettingsModal" class="w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <div class="font-mono-cad bp-muted-text mb-2">VISUAL THEME (HOTKEY: T)</div>
+          <div class="grid grid-cols-2 gap-2 font-mono-cad">
+            <button type="button" data-set-theme="cyan" class="p-2.5 rounded-lg border border-current/25 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#00f0ff]"></span><span>Blueprint Cyan</span></button>
+            <button type="button" data-set-theme="gold" class="p-2.5 rounded-lg border border-current/25 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#f59e0b]"></span><span>Imperial Gold</span></button>
+            <button type="button" data-set-theme="crimson" class="p-2.5 rounded-lg border border-current/25 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#fb7185]"></span><span>Arena Crimson</span></button>
+            <button type="button" data-set-theme="light" class="p-2.5 rounded-lg border border-current/25 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-white border border-slate-400"></span><span>Daylight Paper</span></button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 font-mono-cad">
+          <button id="soundToggleBtn" type="button" aria-pressed="false" class="p-2.5 rounded-lg border border-current/25 flex items-center justify-center gap-1.5"><i class="fa-solid fa-volume-xmark"></i><span>SFX: OFF</span></button>
+          <button id="fxModeToggleBtn" type="button" class="p-2.5 rounded-lg border border-current/25"><span>FX: FULL</span></button>
+          <button id="fontScaleToggleBtn" type="button" class="p-2.5 rounded-lg border border-current/25 font-bold">A</button>
+        </div>
+
+        <div class="p-3 rounded-xl bg-black/30 border border-current/15 font-mono-cad text-[11px] flex items-center justify-between">
+          <span id="liveClock" class="bp-accent-text">KHULNA_BST: --:--:--</span>
+          <span id="autoSaveBadge" class="bp-muted-text">AUTO-SYNC</span>
+        </div>
+
+        <button type="button" data-open-features class="w-full py-2.5 rounded-xl bp-btn-outline font-mono-cad text-xs font-bold">
+          <i class="fa-solid fa-microchip mr-1.5"></i>EXPLORE ALL 107 JS MODULES
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Palette (Ctrl+K) -->
+  <div id="cmdPaletteModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-start justify-center pt-20 p-4">
+    <div class="w-full max-w-xl bp-card bp-ticks rounded-2xl overflow-hidden shadow-2xl">
+      <div class="p-4 border-b border-current/15 flex items-center gap-3">
+        <i class="fa-solid fa-terminal bp-accent-text"></i>
+        <input id="cmdPaletteInput" type="text" placeholder="Search sections, hotlines, or tools..." class="flex-1 bg-transparent text-sm focus:outline-none">
+        <button type="button" data-close-modal="cmdPaletteModal" class="font-mono-cad text-[10px] px-2 py-1 rounded border border-current/25">ESC</button>
+      </div>
+      <div id="cmdPaletteResults" class="max-h-80 overflow-y-auto p-2 space-y-1"></div>
+    </div>
+  </div>
+
+  <!-- Member Dossier Modal -->
+  <div id="dossierModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-3xl max-h-[90vh] overflow-y-auto bp-card bp-ticks rounded-2xl p-6 relative">
+      <button type="button" data-close-modal="dossierModal" aria-label="Close modal" class="absolute top-4 right-4 w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      <div id="dossierModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Photo Calibration Studio Modal -->
+  <div id="photoCalibModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl max-h-[90vh] overflow-y-auto bp-card bp-ticks rounded-2xl p-6 space-y-5 relative">
+      <div class="flex items-center justify-between border-b border-current/15 pb-3">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text">TEAM PORTRAIT STUDIO</div>
+          <h3 class="font-tech font-bold text-lg">ASSIGN & FRAME TEAM PHOTOS</h3>
+        </div>
+        <button type="button" data-close-modal="photoCalibModal" aria-label="Close modal" class="w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="md:col-span-4 space-y-3">
+          <div id="calibMemberList" class="space-y-1.5"></div>
+          <div class="pt-3 border-t border-current/15 space-y-2 font-mono-cad text-[11px]">
+            <label class="block">FRAME X % <input id="calibPosX" type="range" min="0" max="100" value="50" class="bp-range mt-1"></label>
+            <label class="block">FRAME Y % <input id="calibPosY" type="range" min="0" max="100" value="15" class="bp-range mt-1"></label>
+            <label class="block cursor-pointer py-2 px-3 rounded-lg bp-btn-outline text-center">
+              <i class="fa-solid fa-upload mr-1"></i>UPLOAD PHOTO
+              <input id="calibUploadInput" type="file" accept="image/*" class="hidden">
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <button id="calibClearMemberBtn" type="button" class="py-1.5 rounded border border-rose-400/40 text-rose-300">CLEAR</button>
+              <button id="calibExportMapBtn" type="button" class="py-1.5 rounded border border-current/30 bp-accent-text">EXPORT</button>
+            </div>
+          </div>
+        </div>
+        <div class="md:col-span-8 space-y-4">
+          <div class="flex items-center gap-4 p-3 rounded-xl bg-black/30 border border-current/20">
+            <img id="calibLivePreviewImg" src="" alt="Preview" class="w-16 h-16 rounded-lg object-cover border border-current/40 hidden">
+            <div>
+              <div class="font-mono-cad text-[10px] bp-accent-text">SELECTED</div>
+              <div id="calibPreviewName" class="font-tech font-bold text-sm">Select a member</div>
+            </div>
+          </div>
+          <div id="calibGalleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Detail Modal -->
+  <div id="serviceModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl max-h-[90vh] overflow-y-auto bp-card bp-ticks rounded-2xl p-6 relative">
+      <button type="button" data-close-modal="serviceModal" aria-label="Close modal" class="absolute top-4 right-4 w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      <div id="serviceModalBody"></div>
+    </div>
+  </div>
+
+  <!-- 3-Step Event Wizard Modal -->
+  <div id="diagnosticModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-xl bp-card bp-ticks rounded-2xl p-6 space-y-5 relative">
+      <div class="flex justify-between items-center border-b border-current/15 pb-3">
+        <h3 class="font-tech font-bold text-lg bp-accent-text">3-STEP EVENT SETUP</h3>
+        <button type="button" data-close-modal="diagnosticModal" class="w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="diagnosticWizardForm" class="space-y-4 text-xs">
+        <div>
+          <div class="font-mono-cad bp-accent-text mb-2">1. EVENT FORMAT:</div>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizGoal" value="corporate" checked><span>Corporate / Club Gala</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizGoal" value="concert"><span>Concert / Cultural Fest</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizGoal" value="brand"><span>Brand Launch / Expo</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizGoal" value="luxury"><span>Luxury Wedding / Gala</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="font-mono-cad bp-accent-text mb-2">2. VENUE SETTING:</div>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizEnv" value="indoor" checked><span>Indoor Hall</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizEnv" value="semi"><span>Semi-Covered</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-2"><input type="radio" name="wizEnv" value="outdoor"><span>Open Ground</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="font-mono-cad bp-accent-text mb-2">3. GUEST SCALE:</div>
+          <div class="grid grid-cols-4 gap-2">
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-1.5"><input type="radio" name="wizScale" value="300"><span>300</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-1.5"><input type="radio" name="wizScale" value="700" checked><span>700</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-1.5"><input type="radio" name="wizScale" value="1800"><span>1,800</span></label>
+            <label class="p-2.5 rounded-lg border border-current/25 cursor-pointer flex items-center gap-1.5"><input type="radio" name="wizScale" value="3500"><span>3,500+</span></label>
+          </div>
+        </div>
+        <button type="submit" class="w-full py-3.5 rounded-xl bp-btn-primary font-tech font-bold text-xs">CONFIGURE IN BLUEPRINT LAB →</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tier Comparison Modal -->
+  <div id="compareTiersModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-3xl max-h-[90vh] overflow-y-auto bp-card bp-ticks rounded-2xl p-6 space-y-4 relative">
+      <div class="flex justify-between items-center border-b border-current/15 pb-3">
+        <h3 class="font-tech font-bold text-lg bp-accent-text">PRODUCTION FORMAT COMPARISON</h3>
+        <button type="button" data-close-modal="compareTiersModal" class="w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border-collapse">
+          <thead>
+            <tr class="border-b border-current/25 font-mono-cad bp-accent-text">
+              <th class="p-2.5">SPECIFICATION</th><th class="p-2.5">EXECUTIVE GALA</th><th class="p-2.5">ARENA CONCERT</th><th class="p-2.5">BESPOKE LUXURY</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            <tr><td class="p-2.5 font-semibold">Scale Range</td><td class="p-2.5">150–900 Pax</td><td class="p-2.5">1,000–5,000+ Pax</td><td class="p-2.5">200–1,200 Pax</td></tr>
+            <tr><td class="p-2.5 font-semibold">Stage & Truss</td><td class="p-2.5">32×16 ft Custom</td><td class="p-2.5">48–64 ft Goalpost Truss</td><td class="p-2.5">Architectural Acrylic</td></tr>
+            <tr><td class="p-2.5 font-semibold">Audio System</td><td class="p-2.5">Clean Line-Array + Wireless</td><td class="p-2.5">Dual-Hang High-SPL + Subs</td><td class="p-2.5">Balanced Warm Ensemble</td></tr>
+            <tr><td class="p-2.5 font-semibold">Power Backup</td><td class="p-2.5">3-Phase + Standby</td><td class="p-2.5">Twin 125–150 kVA Grid</td><td class="p-2.5">Silent Gen + Pin-Spots</td></tr>
+            <tr><td class="p-2.5 font-semibold">Access Control</td><td class="p-2.5">PVC VIP Passes + Raffle</td><td class="p-2.5">Mojo Barricades + QR Gate</td><td class="p-2.5">VIP Escort & Valet</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case Study Inspector Modal -->
+  <div id="caseStudyModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl max-h-[90vh] overflow-y-auto bp-card bp-ticks rounded-2xl p-6 relative">
+      <button type="button" data-close-modal="caseStudyModal" class="absolute top-4 right-4 w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      <div id="caseStudyModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Dispatch Confirmation Modal -->
+  <div id="dispatchConfirmModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bp-card bp-ticks rounded-2xl p-6 relative">
+      <button type="button" data-close-modal="dispatchConfirmModal" class="absolute top-4 right-4 w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      <div id="dispatchConfirmBody"></div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div id="shortcutsModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-md bp-card bp-ticks rounded-2xl p-6 space-y-4 relative">
+      <div class="flex justify-between items-center border-b border-current/15 pb-3">
+        <h3 class="font-tech font-bold text-base bp-accent-text">KEYBOARD SHORTCUTS</h3>
+        <button type="button" data-close-modal="shortcutsModal" class="w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-2 text-xs font-mono-cad">
+        <div class="flex justify-between py-1.5 border-b border-current/10"><span>Command Search</span><kbd class="px-2 py-0.5 rounded bg-white/10">Ctrl / Cmd + K</kbd></div>
+        <div class="flex justify-between py-1.5 border-b border-current/10"><span>Switch Theme</span><kbd class="px-2 py-0.5 rounded bg-white/10">T</kbd></div>
+        <div class="flex justify-between py-1.5 border-b border-current/10"><span>Toggle Sound FX</span><kbd class="px-2 py-0.5 rounded bg-white/10">M</kbd></div>
+        <div class="flex justify-between py-1.5 border-b border-current/10"><span>Jump Sections</span><kbd class="px-2 py-0.5 rounded bg-white/10">1 – 6</kbd></div>
+        <div class="flex justify-between py-1.5"><span>Close Modal</span><kbd class="px-2 py-0.5 rounded bg-white/10">ESC</kbd></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 107+ JS Features Explorer Modal -->
+  <div id="featuresModal" aria-hidden="true" class="hidden bp-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl max-h-[90vh] flex flex-col bp-card bp-ticks rounded-2xl p-6 space-y-4 relative">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-current/15 pb-3">
+        <div>
+          <div class="font-mono-cad text-xs bp-accent-text">INTERACTIVE ENGINE</div>
+          <h3 class="font-tech font-bold text-lg"><span id="featuresTotalCount">107</span> ACTIVE JS CAPABILITIES</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <select id="featuresCatFilter" class="px-3 py-1.5 rounded-lg bg-black/40 border border-current/25 font-mono-cad text-xs">
+            <option value="all">ALL CATEGORIES</option>
+            <option value="Shell & UX">Shell & UX</option>
+            <option value="Visual FX">Visual FX</option>
+            <option value="Hero & Brand">Hero & Brand</option>
+            <option value="Architecture">Architecture</option>
+            <option value="Command Roster">Command Roster</option>
+            <option value="Services & Venues">Services & Venues</option>
+            <option value="Blueprint Lab">Blueprint Lab</option>
+            <option value="CAD Studio">CAD Studio</option>
+            <option value="Show Tools">Show Tools</option>
+            <option value="Portfolio">Portfolio</option>
+            <option value="Comms & FAQ">Comms & FAQ</option>
+            <option value="Accessibility">Accessibility</option>
+          </select>
+          <button type="button" data-close-modal="featuresModal" class="w-8 h-8 rounded-lg border border-current/25"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div id="featuresCatalogList" class="overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5 pr-1"></div>
+    </div>
+  </div>
+
+  <!-- Modular JavaScript Engine -->
+  <script defer src="js/00-registry.js"></script>
+  <script defer src="js/01-hud-shell.js"></script>
+  <script defer src="js/02-visual-fx.js"></script>
+  <script defer src="js/03-roster-portfolio.js"></script>
+  <script defer src="js/04-services-venues.js"></script>
+  <script defer src="js/05-blueprint-lab.js"></script>
+  <script defer src="js/06-cad-studio.js"></script>
+  <script defer src="js/07-show-tools.js"></script>
+  <script defer src="js/08-comms-concierge.js"></script>
+</body>
+</html>

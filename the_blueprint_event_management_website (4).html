@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE BLUEPRINT EVENT MANAGEMENT // Khulna, Bangladesh</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Orbitron, Rajdhani, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#040812',
+                        midnight: '#0A141E',
+                        panel: '#0D1B2A',
+                        cyanGlow: '#00F0FF',
+                        iceBlue: '#7DF9FF',
+                        deepCyan: '#00B4D8',
+                        goldGlow: '#F59E0B',
+                        gridLine: 'rgba(0, 240, 255, 0.12)',
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(0, 240, 255, 0.4), 0 0 30px rgba(0, 240, 255, 0.15)',
+                        'neon-strong': '0 0 20px rgba(0, 240, 255, 0.7), 0 0 45px rgba(0, 240, 255, 0.35)',
+                        'neon-gold': '0 0 18px rgba(245, 158, 11, 0.45), 0 0 35px rgba(0, 240, 255, 0.2)',
+                        'hud': 'inset 0 0 20px rgba(0, 240, 255, 0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Architectural Blueprint Background Grid */
+        body {
+            background-color: #040812;
+            color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(to right, rgba(0, 240, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.025) 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+        }
+
+        /* Glowing Text & SVG Filters */
+        .text-glow {
+            text-shadow: 0 0 12px rgba(0, 240, 255, 0.65), 0 0 28px rgba(0, 240, 255, 0.25);
+        }
+
+        .svg-glow {
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.7)) drop-shadow(0 0 18px rgba(0, 240, 255, 0.35));
+        }
+
+        /* Futuristic HUD Card with Corner Brackets */
+        .hud-card {
+            position: relative;
+            background: rgba(10, 20, 30, 0.78);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.22);
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hud-card:hover {
+            border-color: rgba(0, 240, 255, 0.65);
+            box-shadow: 0 0 22px rgba(0, 240, 255, 0.2), inset 0 0 25px rgba(0, 240, 255, 0.09);
+            transform: translateY(-3px);
+        }
+
+        .hud-corner-tl, .hud-corner-tr, .hud-corner-bl, .hud-corner-br {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-color: #00F0FF;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .hud-corner-tl { top: -1px; left: -1px; border-top: 2px solid #00F0FF; border-left: 2px solid #00F0FF; }
+        .hud-corner-tr { top: -1px; right: -1px; border-top: 2px solid #00F0FF; border-right: 2px solid #00F0FF; }
+        .hud-corner-bl { bottom: -1px; left: -1px; border-bottom: 2px solid #00F0FF; border-left: 2px solid #00F0FF; }
+        .hud-corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid #00F0FF; border-right: 2px solid #00F0FF; }
+
+        /* Animated Scanline Effect */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+        .scanline-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.06), transparent);
+            height: 15%;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Pulse Animation for Circuit Nodes */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.75; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: rgba(0, 240, 255, 0.15);
+            height: 6px;
+            border-radius: 4px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 4px;
+            background: #00F0FF;
+            cursor: pointer;
+            box-shadow: 0 0 12px #00F0FF;
+            border: 2px solid #FFF;
+        }
+    </style>
+</head>
+<body class="relative selection:bg-cyanGlow selection:text-obsidian">
+
+    <!-- Interactive CAD Crosshair & Telemetry Background Canvas -->
+    <canvas id="cadCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- ==================== 1. TOP HUD NAVIGATION BAR ==================== -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-obsidian/90 border-b border-cyanGlow/20">
+        <!-- Top Telemetry Micro-Bar -->
+        <div class="bg-midnight/90 border-b border-cyanGlow/10 px-4 py-1.5 text-[11px] font-mono text-cyanGlow/80 hidden md:flex justify-between items-center max-w-7xl mx-auto">
+            <div class="flex items-center gap-5">
+                <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    STATUS: ONLINE // KHULNA HQ
+                </span>
+                <span>GRID_REF: 22.8456° N, 89.5403° E</span>
+                <span id="liveClock">SYS_TIME: --:--:-- BST</span>
+            </div>
+            <div class="flex items-center gap-5">
+                <a href="tel:+8801788706868" class="hover:text-white transition-colors text-iceBlue font-semibold">
+                    <i class="fa-solid fa-satellite-dish mr-1 text-cyanGlow"></i> COMMS_01: +880 1788-706868
+                </a>
+                <span class="text-cyanGlow/30">|</span>
+                <a href="tel:+8801703700799" class="hover:text-white transition-colors text-iceBlue font-semibold">
+                    <i class="fa-solid fa-tower-cell mr-1 text-cyanGlow"></i> COMMS_02: +880 1703-700799
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Navbar -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo (Recreated SVG matching uploaded logo) -->
+            <a href="#" class="flex items-center gap-3.5 group focus:outline-none">
+                <div class="w-12 h-12 relative flex items-center justify-center">
+                    <svg viewBox="0 0 120 120" class="w-full h-full svg-glow transition-transform duration-500 group-hover:scale-105">
+                        <!-- Outer Technical Diamond -->
+                        <polygon points="60,8 112,60 60,112 8,60" fill="rgba(10, 20, 30, 0.7)" stroke="#00F0FF" stroke-width="2" />
+                        <polygon points="60,16 104,60 60,104 16,60" fill="none" stroke="#00F0FF" stroke-width="0.8" stroke-dasharray="4 2" />
+                        <!-- Left & Bottom CAD Rulers -->
+                        <line x1="12" y1="25" x2="12" y2="95" stroke="#00F0FF" stroke-width="0.8" opacity="0.7" />
+                        <line x1="9" y1="35" x2="15" y2="35" stroke="#00F0FF" stroke-width="1" />
+                        <line x1="9" y1="50" x2="15" y2="50" stroke="#00F0FF" stroke-width="1" />
+                        <line x1="9" y1="65" x2="15" y2="65" stroke="#00F0FF" stroke-width="1" />
+                        <line x1="9" y1="80" x2="15" y2="80" stroke="#00F0FF" stroke-width="1" />
+                        <!-- Iconic Isometric Glowing 'M' / Chevron Structure -->
+                        <path d="M26,82 L26,40 L60,72 L94,40 L94,82" fill="none" stroke="#7DF9FF" stroke-width="6" stroke-linecap="square" stroke-linejoin="miter" />
+                        <path d="M34,88 L34,52 L60,77 L86,52 L86,88" fill="none" stroke="#00F0FF" stroke-width="2" opacity="0.85" />
+                        <!-- Circuit Nodes -->
+                        <circle cx="60" cy="36" r="2.5" fill="#7DF9FF" />
+                        <line x1="60" y1="38.5" x2="60" y2="58" stroke="#00F0FF" stroke-width="1.2" />
+                        <circle cx="60" cy="94" r="2.5" fill="#7DF9FF" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="font-orbitron font-extrabold text-lg sm:text-xl tracking-wider text-cyanGlow text-glow leading-none">
+                        THE BLUEPRINT
+                    </div>
+                    <div class="font-orbitron font-bold text-[10px] sm:text-xs tracking-[0.25em] text-white/90 mt-1">
+                        EVENT MANAGEMENT
+                    </div>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-1 xl:gap-1.5 font-mono text-[11px] tracking-wider">
+                <a href="#architecture" class="px-2.5 py-2 rounded text-slate-300 hover:text-cyanGlow hover:bg-cyanGlow/10 transition-all">[01. ABOUT US]</a>
+                <a href="#leadership" class="px-2.5 py-2 rounded text-iceBlue hover:text-cyanGlow hover:bg-cyanGlow/10 transition-all">[02. COMMAND ROSTER]</a>
+                <a href="#services" class="px-2.5 py-2 rounded text-slate-300 hover:text-cyanGlow hover:bg-cyanGlow/10 transition-all">[03. SERVICES]</a>
+                <a href="#blueprint-lab" class="px-2.5 py-2 rounded text-cyanGlow bg-cyanGlow/10 border border-cyanGlow/30 hover:bg-cyanGlow/20 transition-all">[04. BLUEPRINT LAB]</a>
+                <a href="#portfolio" class="px-2.5 py-2 rounded text-slate-300 hover:text-cyanGlow hover:bg-cyanGlow/10 transition-all">[05. PORTFOLIO]</a>
+                <a href="#comms" class="px-2.5 py-2 rounded text-slate-300 hover:text-cyanGlow hover:bg-cyanGlow/10 transition-all">[06. COMMS]</a>
+            </nav>
+
+            <!-- Action CTA & Dual Phone Trigger -->
+            <div class="hidden sm:flex items-center gap-2.5">
+                <div class="flex flex-col text-right font-mono text-[10px] leading-tight pr-1">
+                    <a href="tel:+8801788706868" class="text-cyanGlow hover:text-white transition-colors font-semibold">
+                        <i class="fa-solid fa-phone-volume mr-1"></i>+880 1788-706868
+                    </a>
+                    <a href="tel:+8801703700799" class="text-iceBlue hover:text-white transition-colors font-semibold mt-0.5">
+                        <i class="fa-solid fa-phone mr-1"></i>+880 1703-700799
+                    </a>
+                </div>
+                <a href="#comms" class="px-4 py-2.5 rounded bg-cyanGlow text-obsidian font-orbitron font-bold text-xs tracking-wider shadow-neon hover:bg-iceBlue hover:shadow-neon-strong transition-all">
+                    INITIATE PROJECT
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="lg:hidden p-2.5 rounded border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow/10 focus:outline-none">
+                <i class="fa-solid fa-bars-staggered text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-obsidian/95 border-b border-cyanGlow/30 px-4 pt-3 pb-6 space-y-2.5 font-mono text-xs">
+            <div class="flex items-center justify-between py-2 border-b border-cyanGlow/15 text-[11px] text-cyanGlow">
+                <span>LOC // KHULNA, BANGLADESH</span>
+                <span>2 COMMS LINES ACTIVE</span>
+            </div>
+            <a href="#architecture" class="block py-2 px-3 rounded hover:bg-cyanGlow/10 text-slate-200">[01. ABOUT US & ARCHITECTURE]</a>
+            <a href="#leadership" class="block py-2 px-3 rounded hover:bg-cyanGlow/10 text-iceBlue font-semibold">[02. FOUNDING PANEL & EXECUTIVES]</a>
+            <a href="#services" class="block py-2 px-3 rounded hover:bg-cyanGlow/10 text-slate-200">[03. SERVICES MATRIX]</a>
+            <a href="#blueprint-lab" class="block py-2 px-3 rounded bg-cyanGlow/10 text-cyanGlow border border-cyanGlow/30">[04. BLUEPRINT LAB CONFIGURATOR]</a>
+            <a href="#portfolio" class="block py-2 px-3 rounded hover:bg-cyanGlow/10 text-slate-200">[05. EXECUTED PORTFOLIO]</a>
+            <a href="#comms" class="block py-2 px-3 rounded hover:bg-cyanGlow/10 text-slate-200">[06. COMMAND CENTER & COMMS]</a>
+            <div class="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <a href="tel:+8801788706868" class="w-full py-2.5 rounded border border-cyanGlow text-cyanGlow text-center font-bold">
+                    <i class="fa-solid fa-phone mr-1.5"></i> +880 1788-706868
+                </a>
+                <a href="tel:+8801703700799" class="w-full py-2.5 rounded border border-iceBlue text-iceBlue text-center font-bold">
+                    <i class="fa-solid fa-phone mr-1.5"></i> +880 1703-700799
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== 2. FUTURISTIC HERO SECTION ==================== -->
+    <section class="relative min-h-[90vh] flex flex-col justify-between py-12 lg:py-16 overflow-hidden z-10">
+        <div class="scanline-overlay"></div>
+
+        <!-- Live Mouse Telemetry Readout (Desktop) -->
+        <div class="hidden xl:flex justify-between items-center max-w-7xl w-full mx-auto px-8 mb-4 font-mono text-[11px] text-cyanGlow/60">
+            <div id="mouseCoords">CURSOR_CAD // X: 0420.00 | Y: 0280.00</div>
+            <div>SCHEMATIC_ID // BP-KHL-2026-PRIME</div>
+            <div>HOTLINES // +8801788706868 | +8801703700799</div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center my-auto">
+            
+            <!-- Left Column: Hero Copy & Dual Hotline Panel -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-cyanGlow/40 bg-cyanGlow/10 text-cyanGlow font-mono text-xs">
+                    <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
+                    <span>ARCHITECTS OF MOMENTS // KHULNA, BANGLADESH</span>
+                </div>
+
+                <h1 class="font-orbitron font-black text-3xl sm:text-5xl xl:text-6xl tracking-tight leading-[1.12] text-white">
+                    DRAFTING THE <span class="text-cyanGlow text-glow">VISION.</span><br>
+                    BUILDING THE <span class="text-iceBlue text-glow">EXPERIENCE.</span>
+                </h1>
+
+                <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-inter leading-relaxed">
+                    Every landmark event starts with a master plan. <strong class="text-white font-semibold">The Blueprint Event Management</strong> bridges bold creative direction with precision structural, audio-visual, and logistical engineering across Khulna and beyond.
+                </p>
+
+                <!-- Primary Action Buttons -->
+                <div class="pt-1 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    <a href="#blueprint-lab" class="w-full sm:w-auto px-7 py-4 rounded bg-cyanGlow text-obsidian font-orbitron font-extrabold text-sm tracking-wider shadow-neon hover:bg-iceBlue hover:shadow-neon-strong transition-all flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-compass-drafting text-base"></i>
+                        <span>LAUNCH EVENT CONFIGURATOR</span>
+                    </a>
+                    <a href="#leadership" class="w-full sm:w-auto px-6 py-4 rounded hud-card border border-cyanGlow/50 text-cyanGlow hover:text-white font-orbitron font-bold text-xs tracking-wider flex items-center justify-center gap-2.5">
+                        <i class="fa-solid fa-users-viewfinder text-base"></i>
+                        <span>MEET COMMAND TEAM</span>
+                    </a>
+                </div>
+
+                <!-- Dual Khulna HQ Direct Comms Strip -->
+                <div class="hud-card p-4 rounded-xl border border-cyanGlow/30 max-w-2xl mx-auto lg:mx-0">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div class="flex items-center justify-between mb-2.5 font-mono text-[10px] text-cyanGlow">
+                        <span><i class="fa-solid fa-headset mr-1.5"></i>DIRECT KHULNA HQ COMMS CHANNELS</span>
+                        <span class="text-emerald-400">● 24/7 ACTIVE DISPATCH</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="flex items-center justify-between p-2.5 rounded bg-obsidian/80 border border-cyanGlow/25">
+                            <div class="text-left">
+                                <div class="font-mono text-[10px] text-slate-400">HOTLINE 01 // PRIMARY</div>
+                                <a href="tel:+8801788706868" class="font-orbitron font-bold text-sm text-white hover:text-cyanGlow transition-colors">+880 1788-706868</a>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <a href="tel:+8801788706868" title="Call Hotline 1" class="w-8 h-8 rounded bg-cyanGlow/15 border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow hover:text-obsidian flex items-center justify-center transition-all">
+                                    <i class="fa-solid fa-phone text-xs"></i>
+                                </a>
+                                <a href="https://wa.me/8801788706868" target="_blank" rel="noopener noreferrer" title="WhatsApp Line 1" class="w-8 h-8 rounded bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 hover:bg-emerald-400 hover:text-obsidian flex items-center justify-center transition-all">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-2.5 rounded bg-obsidian/80 border border-cyanGlow/25">
+                            <div class="text-left">
+                                <div class="font-mono text-[10px] text-slate-400">HOTLINE 02 // COMMAND</div>
+                                <a href="tel:+8801703700799" class="font-orbitron font-bold text-sm text-white hover:text-cyanGlow transition-colors">+880 1703-700799</a>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <a href="tel:+8801703700799" title="Call Hotline 2" class="w-8 h-8 rounded bg-cyanGlow/15 border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow hover:text-obsidian flex items-center justify-center transition-all">
+                                    <i class="fa-solid fa-phone text-xs"></i>
+                                </a>
+                                <a href="https://wa.me/8801703700799" target="_blank" rel="noopener noreferrer" title="WhatsApp Line 2" class="w-8 h-8 rounded bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 hover:bg-emerald-400 hover:text-obsidian flex items-center justify-center transition-all">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Centerpiece Recreated High-Precision Glowing Blueprint Emblem + Original Emblem Toggle -->
+            <div class="lg:col-span-5 flex flex-col items-center justify-center relative">
+                <!-- Mode Switcher between Live Animated CAD SVG & Uploaded Emblem Image -->
+                <div class="mb-3 flex items-center gap-2 font-mono text-[10px]">
+                    <button type="button" id="viewSvgLogoBtn" class="px-3 py-1 rounded bg-cyanGlow text-obsidian font-bold transition-all">
+                        [LIVE CAD VECTOR]
+                    </button>
+                    <button type="button" id="viewImgLogoBtn" class="px-3 py-1 rounded border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow/10 transition-all">
+                        [ORIGINAL EMBLEM ART]
+                    </button>
+                </div>
+
+                <!-- High-Detail SVG Recreation & Uploaded Image Container -->
+                <div class="w-full max-w-[420px] p-6 hud-card rounded-2xl border border-cyanGlow/30 flex flex-col items-center relative group">
+                    <div class="hud-corner-tl"></div>
+                    <div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div>
+                    <div class="hud-corner-br"></div>
+
+                    <!-- Animated Vector CAD View -->
+                    <div id="heroSvgLogoContainer" class="w-full flex flex-col items-center">
+                        <svg viewBox="0 0 400 340" class="w-full h-auto svg-glow animate-pulse-glow">
+                            <defs>
+                                <linearGradient id="cyanBeam" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FFFFFF" />
+                                    <stop offset="50%" stop-color="#7DF9FF" />
+                                    <stop offset="100%" stop-color="#00B4D8" />
+                                </linearGradient>
+                                <linearGradient id="darkFill" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#0D2538" stop-opacity="0.85" />
+                                    <stop offset="100%" stop-color="#040812" stop-opacity="0.95" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Background Technical Grid inside SVG -->
+                            <g stroke="#00F0FF" stroke-width="0.4" opacity="0.25">
+                                <line x1="40" y1="170" x2="360" y2="170" />
+                                <line x1="200" y1="15" x2="200" y2="315" />
+                                <rect x="285" y="65" width="45" height="60" fill="none" />
+                                <rect x="285" y="195" width="40" height="40" fill="none" stroke-dasharray="2 2" />
+                            </g>
+
+                            <!-- Left Vertical Measurement Ruler -->
+                            <g stroke="#00F0FF" stroke-width="1" opacity="0.75" font-family="JetBrains Mono" font-size="7" fill="#00F0FF">
+                                <line x1="78" y1="68" x2="78" y2="265" />
+                                <line x1="72" y1="68" x2="78" y2="68" />
+                                <text x="54" y="70">200</text>
+                                <line x1="74" y1="90" x2="78" y2="90" />
+                                <line x1="74" y1="110" x2="78" y2="110" />
+                                <line x1="72" y1="130" x2="78" y2="130" />
+                                <text x="45" y="132">10.1R</text>
+                                <line x1="72" y1="170" x2="86" y2="170" />
+                                <text x="42" y="173">0.1002</text>
+                                <line x1="74" y1="210" x2="78" y2="210" />
+                                <line x1="74" y1="235" x2="78" y2="235" />
+                                <line x1="72" y1="265" x2="78" y2="265" />
+                            </g>
+
+                            <!-- Bottom Measurement Ticks -->
+                            <g stroke="#00F0FF" stroke-width="1" opacity="0.75">
+                                <line x1="230" y1="282" x2="310" y2="282" />
+                                <line x1="240" y1="278" x2="240" y2="285" />
+                                <line x1="255" y1="278" x2="255" y2="285" />
+                                <line x1="270" y1="278" x2="270" y2="285" />
+                                <line x1="285" y1="278" x2="285" y2="285" />
+                                <line x1="300" y1="278" x2="300" y2="285" />
+                            </g>
+
+                            <!-- Outer Isometric Rotated Square / Diamond -->
+                            <polygon points="200,28 332,170 200,308 68,170" fill="url(#darkFill)" stroke="#00F0FF" stroke-width="2" />
+                            <polygon points="200,42 318,170 200,294 82,170" fill="none" stroke="#7DF9FF" stroke-width="1" opacity="0.7" />
+                            <polygon points="200,58 302,170 200,278 98,170" fill="none" stroke="#00F0FF" stroke-width="0.8" stroke-dasharray="6 3" />
+
+                            <!-- Inner Upper Diamond Geometric Core -->
+                            <polygon points="200,82 248,130 200,178 152,130" fill="none" stroke="#7DF9FF" stroke-width="1.5" />
+                            <polygon points="200,98 232,130 200,162 168,130" fill="rgba(0,240,255,0.08)" stroke="#00F0FF" stroke-width="1" />
+
+                            <!-- Circuit Board Traces & Glowing Nodes (Lower Diamond) -->
+                            <g stroke="#7DF9FF" stroke-width="1.3" fill="none" opacity="0.9">
+                                <polyline points="160,185 160,235 200,272 240,235 240,185" />
+                                <polyline points="175,195 175,225 200,248 225,225 225,195" />
+                                <polyline points="145,175 145,245 125,260" />
+                                <circle cx="160" cy="210" r="2.5" fill="#FFFFFF" />
+                                <circle cx="175" cy="225" r="2.5" fill="#FFFFFF" />
+                                <circle cx="200" cy="248" r="3" fill="#FFFFFF" />
+                                <circle cx="225" cy="215" r="2.5" fill="#FFFFFF" />
+                                <circle cx="125" cy="260" r="2.5" fill="#7DF9FF" />
+                            </g>
+
+                            <!-- Iconic Bold 3D Isometric 'M' / Wings Structure -->
+                            <polygon points="116,90 132,76 132,236 116,222" fill="url(#cyanBeam)" opacity="0.85" />
+                            <polygon points="284,90 268,76 268,236 284,222" fill="url(#cyanBeam)" opacity="0.85" />
+                            <polygon points="116,76 200,158 284,76 284,102 200,184 116,102" fill="url(#cyanBeam)" stroke="#FFFFFF" stroke-width="1.5" />
+                            <polyline points="132,115 200,182 268,115" fill="none" stroke="#FFFFFF" stroke-width="2.5" />
+
+                            <!-- Brightest Starburst Focal Points -->
+                            <circle cx="200" cy="28" r="3" fill="#FFFFFF" />
+                            <circle cx="200" cy="182" r="4" fill="#FFFFFF" />
+                            <circle cx="68" cy="170" r="3" fill="#FFFFFF" />
+                            <circle cx="332" cy="170" r="3" fill="#FFFFFF" />
+                            <circle cx="200" cy="308" r="3" fill="#FFFFFF" />
+                        </svg>
+
+                        <div class="text-center mt-2">
+                            <div class="font-orbitron font-black text-2xl sm:text-3xl tracking-[0.14em] text-iceBlue text-glow">
+                                THE BLUEPRINT
+                            </div>
+                            <div class="font-orbitron font-bold text-xs sm:text-sm tracking-[0.28em] text-cyanGlow mt-1">
+                                EVENT MANAGEMENT
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded Official Brand Artwork View -->
+                    <div id="heroImgLogoContainer" class="hidden w-full">
+                        <img src="Gemini_Generated_Image_2gh6dr2gh6dr2gh6.jfif" alt="The Blueprint Event Management Official Logo" class="w-full h-auto rounded-xl border border-cyanGlow/40 shadow-neon object-cover" onerror="this.src='https://placehold.co/600x600/040812/00F0FF?text=THE+BLUEPRINT'">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Live Telemetry Ticker Bar -->
+        <div class="mt-10 border-y border-cyanGlow/20 bg-midnight/80 py-3 px-4">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-cyanGlow/90">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-microchip"></i> PRECISION ENGINEERED</span>
+                <span class="hidden sm:inline text-cyanGlow/30">//</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-users-gear"></i> FOUNDING PANEL & EXECUTIVE COMMAND</span>
+                <span class="hidden md:inline text-cyanGlow/30">//</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-phone-volume"></i> +880 1788-706868 & +880 1703-700799</span>
+                <span class="hidden lg:inline text-cyanGlow/30">//</span>
+                <span class="flex items-center gap-2 text-iceBlue"><i class="fa-solid fa-location-crosshairs"></i> KHULNA, BANGLADESH</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3. [01. ABOUT US & ARCHITECTURE] ==================== -->
+    <section id="architecture" class="py-20 lg:py-28 relative z-10 border-b border-cyanGlow/15">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Section Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+                <div>
+                    <div class="font-mono text-xs text-cyanGlow tracking-widest uppercase mb-2">
+                        // SECTION 01 : ABOUT US // ARCHITECTS OF THE EXPERIENCE
+                    </div>
+                    <h2 class="font-orbitron font-bold text-3xl sm:text-4xl text-white tracking-wide">
+                        WE DON'T LEAVE MOMENTS TO CHANCE.<br>
+                        <span class="text-cyanGlow text-glow">WE ENGINEER THEM.</span>
+                    </h2>
+                </div>
+                <div class="font-mono text-xs text-slate-400 border-l-2 border-cyanGlow pl-4 max-w-xs">
+                    DOC_REF: BP-BIO-v4.0<br>
+                    FOUNDED: KHULNA, BANGLADESH<br>
+                    CLEARANCE: PUBLIC PORTFOLIO
+                </div>
+            </div>
+
+            <!-- Official Bio Split Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-7 hud-card p-6 sm:p-8 rounded-xl">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div class="font-mono text-xs text-cyanGlow mb-3">[ABOUT US // THE BLUEPRINT PHILOSOPHY]</div>
+                    <h3 class="font-rajdhani font-bold text-2xl text-white mb-4">
+                        Bridging Bold Creative Vision with Surgical Logistical Precision
+                    </h3>
+                    <div class="space-y-4 text-slate-300 leading-relaxed text-sm sm:text-base">
+                        <p>
+                            Every landmark structure begins with a master blueprint—and unforgettable events are no different. <strong class="text-iceBlue">The Blueprint Event Management</strong> was established in Khulna with a singular mission: to transform ambitious concepts into flawlessly executed, high-impact experiences.
+                        </p>
+                        <p>
+                            Led by our Founding Panel—<strong class="text-white">Abdullah Bin Murshed Fattah</strong> and <strong class="text-white">Nibir Guha Roy</strong>—alongside our dedicated Executive Command team, we operate as full-scale event architects. While others see chaos in a moving crowd or a tight technical schedule, we see an interconnected system waiting to be optimized.
+                        </p>
+                        <p>
+                            From high-energy university cultural festivals, live concerts, and club nights to executive corporate summits, bespoke weddings, and brand launches across Khulna and beyond, we engineer every stage, sound wave, lighting cue, and security pass down to the millimeter.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Bio Spec Card -->
+                <div class="lg:col-span-5 hud-card p-6 sm:p-8 rounded-xl flex flex-col justify-between bg-midnight/90">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex items-center justify-between border-b border-cyanGlow/20 pb-3 mb-5">
+                            <span class="font-mono text-xs text-cyanGlow">AGENCY TELEMETRY</span>
+                            <span class="px-2 py-0.5 rounded bg-cyanGlow/15 text-cyanGlow font-mono text-[10px]">VERIFIED HQ</span>
+                        </div>
+                        <ul class="space-y-3.5 font-mono text-xs">
+                            <li class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-slate-400">DESIGNATION:</span>
+                                <span class="text-white font-semibold">THE BLUEPRINT EVENT MGMT</span>
+                            </li>
+                            <li class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-slate-400">OPERATING BASE:</span>
+                                <span class="text-cyanGlow">KHULNA, BANGLADESH</span>
+                            </li>
+                            <li class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-slate-400">FOUNDING PANEL:</span>
+                                <span class="text-iceBlue text-right">A.B.M. FATTAH & N.G. ROY</span>
+                            </li>
+                            <li class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-slate-400">HOTLINE 01:</span>
+                                <a href="tel:+8801788706868" class="text-cyanGlow hover:underline font-bold">+880 1788-706868</a>
+                            </li>
+                            <li class="flex justify-between py-2 border-b border-white/5">
+                                <span class="text-slate-400">HOTLINE 02:</span>
+                                <a href="tel:+8801703700799" class="text-iceBlue hover:underline font-bold">+880 1703-700799</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6 p-4 rounded-lg bg-cyanGlow/5 border border-cyanGlow/30">
+                        <div class="font-orbitron text-xs text-cyanGlow mb-1">"YOUR VISION. OUR BLUEPRINT."</div>
+                        <p class="text-xs text-slate-300 font-inter">
+                            Precision in planning. Artistry in execution. Connect with our Khulna command desk anytime.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The 4-Phase Blueprint Protocol -->
+            <div>
+                <div class="font-mono text-xs text-cyanGlow uppercase tracking-widest mb-6">
+                    // THE 4-PHASE BLUEPRINT EXECUTION PROTOCOL
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Phase 1 -->
+                    <div class="hud-card p-6 rounded-xl relative">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-orbitron font-bold text-2xl text-cyanGlow/40">01</span>
+                            <i class="fa-solid fa-compass-drafting text-cyanGlow text-xl"></i>
+                        </div>
+                        <h4 class="font-orbitron font-bold text-base text-white mb-2">CONCEPT & CAD DRAFTING</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed mb-4">
+                            Spatial layout engineering, 3D stage architecture, custom visual identity, banners, and thematic master-planning.
+                        </p>
+                        <div class="font-mono text-[10px] text-cyanGlow/70 pt-3 border-t border-cyanGlow/15">
+                            OUTPUT // 3D RENDER & FLOORPLAN
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="hud-card p-6 rounded-xl relative">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-orbitron font-bold text-2xl text-cyanGlow/40">02</span>
+                            <i class="fa-solid fa-bolt-lightning text-cyanGlow text-xl"></i>
+                        </div>
+                        <h4 class="font-orbitron font-bold text-base text-white mb-2">STRUCTURAL & AV RIGGING</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed mb-4">
+                            Heavy-duty aluminum trussing, concert line-array acoustics, intelligent DMX lighting matrices, and LED walls.
+                        </p>
+                        <div class="font-mono text-[10px] text-cyanGlow/70 pt-3 border-t border-cyanGlow/15">
+                            OUTPUT // FULL TECHNICAL PRODUCTION
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="hud-card p-6 rounded-xl relative">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-orbitron font-bold text-2xl text-cyanGlow/40">03</span>
+                            <i class="fa-solid fa-id-badge text-cyanGlow text-xl"></i>
+                        </div>
+                        <h4 class="font-orbitron font-bold text-base text-white mb-2">LOGISTICS & ACCESS</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed mb-4">
+                            End-to-end crowd flow, serialized VIP security passes, custom lanyards, raffle systems, and guest hospitality.
+                        </p>
+                        <div class="font-mono text-[10px] text-cyanGlow/70 pt-3 border-t border-cyanGlow/15">
+                            OUTPUT // ZERO-BOTTLENECK FLOW
+                        </div>
+                    </div>
+
+                    <!-- Phase 4 -->
+                    <div class="hud-card p-6 rounded-xl relative">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-orbitron font-bold text-2xl text-cyanGlow/40">04</span>
+                            <i class="fa-solid fa-tower-broadcast text-cyanGlow text-xl"></i>
+                        </div>
+                        <h4 class="font-orbitron font-bold text-base text-white mb-2">LIVE SHOW CALLING</h4>
+                        <p class="text-slate-300 text-xs leading-relaxed mb-4">
+                            Real-time stage direction, artist management, cue-to-cue synchronization, and on-ground incident command.
+                        </p>
+                        <div class="font-mono text-[10px] text-cyanGlow/70 pt-3 border-t border-cyanGlow/15">
+                            OUTPUT // FLAWLESS CURTAIN CALL
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3B. [02. COMMAND ROSTER] FOUNDING PANEL & EXECUTIVE MEMBERS ==================== -->
+    <section id="leadership" class="py-20 lg:py-28 relative z-10 border-b border-cyanGlow/15 bg-midnight/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Roster Header -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-14 gap-6">
+                <div>
+                    <div class="font-mono text-xs text-cyanGlow tracking-widest uppercase mb-2">
+                        // SECTION 02 : COMMAND HIERARCHY & LEADERSHIP ROSTER
+                    </div>
+                    <h2 class="font-orbitron font-bold text-3xl sm:text-4xl text-white">
+                        THE ARCHITECTS BEHIND <span class="text-cyanGlow text-glow">THE BLUEPRINT</span>
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                        Meet the Founding Panel and Executive Command engineering Khulna’s most iconic live experiences, corporate galas, and cultural productions.
+                    </p>
+                </div>
+                <div class="font-mono text-xs text-cyanGlow/80 border-l-2 border-cyanGlow pl-4">
+                    ROSTER_STATUS // ACTIVE<br>
+                    FOUNDING PANEL: 02<br>
+                    EXECUTIVE COMMAND: 04
+                </div>
+            </div>
+
+            <!-- TIER 1: FOUNDING PANEL (2 HIGH-PROMINENCE CARDS) -->
+            <div class="mb-16">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="px-3 py-1 rounded bg-goldGlow/20 border border-goldGlow text-amber-300 font-mono text-xs font-bold tracking-wider">
+                        TIER 01 // FOUNDING PANEL
+                    </span>
+                    <div class="h-px bg-gradient-to-r from-goldGlow/60 via-cyanGlow/30 to-transparent flex-1"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+                    <!-- Founder 01: Abdullah Bin Murshed Fattah -->
+                    <div class="hud-card rounded-2xl overflow-hidden border border-cyanGlow/50 shadow-neon group flex flex-col justify-between">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+
+                        <div>
+                            <!-- Top HUD Bar -->
+                            <div class="px-5 py-3 bg-obsidian/90 border-b border-cyanGlow/20 flex items-center justify-between font-mono text-[11px]">
+                                <span class="text-amber-400 font-bold"><i class="fa-solid fa-crown mr-1.5"></i>FOUNDING_PANEL // 01</span>
+                                <span class="text-cyanGlow">CLEARANCE: LEVEL_ALPHA</span>
+                            </div>
+
+                            <!-- Portrait Container (Replace src="" below with your image path/URL) -->
+                            <div class="relative h-80 sm:h-96 w-full overflow-hidden bg-midnight">
+                                <!-- PUT ABDULLAH BIN MURSHED FATTAH PHOTO SRC BELOW -->
+                                <img 
+                                    src="IMG_3220.JPG" 
+                                    onerror="this.onerror=null; this.src='https://placehold.co/600x750/0A141E/00F0FF?text=Abdullah+Bin+Murshed+Fattah';" 
+                                    alt="Abdullah Bin Murshed Fattah - Founding Panel" 
+                                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent pointer-events-none"></div>
+
+                                <!-- Overlay Role Badge -->
+                                <div class="absolute bottom-4 left-5 right-5 pointer-events-none">
+                                    <div class="inline-block px-2.5 py-0.5 rounded bg-cyanGlow/20 border border-cyanGlow/50 backdrop-blur-md font-mono text-[10px] text-iceBlue uppercase tracking-widest mb-1.5">
+                                        CO-FOUNDER & CHIEF ARCHITECT
+                                    </div>
+                                    <h3 class="font-orbitron font-extrabold text-xl sm:text-2xl text-white text-glow leading-tight">
+                                        Abdullah Bin Murshed Fattah
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <!-- Bio & Specs -->
+                            <div class="p-6">
+                                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                                    Spearheading strategic event architecture, master concept drafting, and executive client partnerships across Khulna. Dedicated to turning high-stakes visions into landmark live productions.
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-cyanGlow/15 font-mono text-[11px] text-cyanGlow">
+                                    <span><i class="fa-solid fa-check-double mr-1.5"></i>Strategic Direction</span>
+                                    <span><i class="fa-solid fa-check-double mr-1.5"></i>Master CAD Planning</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Founder 02: Nibir Guha Roy -->
+                    <div class="hud-card rounded-2xl overflow-hidden border border-cyanGlow/50 shadow-neon group flex flex-col justify-between">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+
+                        <div>
+                            <!-- Top HUD Bar -->
+                            <div class="px-5 py-3 bg-obsidian/90 border-b border-cyanGlow/20 flex items-center justify-between font-mono text-[11px]">
+                                <span class="text-amber-400 font-bold"><i class="fa-solid fa-crown mr-1.5"></i>FOUNDING_PANEL // 02</span>
+                                <span class="text-cyanGlow">CLEARANCE: LEVEL_ALPHA</span>
+                            </div>
+
+                            <!-- Portrait Container (Replace src="" below with your image path/URL) -->
+                            <div class="relative h-80 sm:h-96 w-full overflow-hidden bg-midnight">
+                                <!-- PUT NIBIR GUHA ROY PHOTO SRC BELOW -->
+                                <img 
+                                    src="YOUR_IMAGE_SRC_HERE_2.jpg" 
+                                    onerror="this.onerror=null; this.src='https://placehold.co/600x750/0A141E/00F0FF?text=Nibir+Guha+Roy';" 
+                                    alt="Nibir Guha Roy - Founding Panel" 
+                                    class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent pointer-events-none"></div>
+
+                                <!-- Overlay Role Badge -->
+                                <div class="absolute bottom-4 left-5 right-5 pointer-events-none">
+                                    <div class="inline-block px-2.5 py-0.5 rounded bg-cyanGlow/20 border border-cyanGlow/50 backdrop-blur-md font-mono text-[10px] text-iceBlue uppercase tracking-widest mb-1.5">
+                                        CO-FOUNDER & PRODUCTION DIRECTOR
+                                    </div>
+                                    <h3 class="font-orbitron font-extrabold text-xl sm:text-2xl text-white text-glow leading-tight">
+                                        Nibir Guha Roy
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <!-- Bio & Specs -->
+                            <div class="p-6">
+                                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                                    Commanding full-scale technical production, stage fabrication, audio-visual engineering, and live show calling. Ensuring every event operates with zero-latency precision.
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-cyanGlow/15 font-mono text-[11px] text-cyanGlow">
+                                    <span><i class="fa-solid fa-check-double mr-1.5"></i>Technical Production</span>
+                                    <span><i class="fa-solid fa-check-double mr-1.5"></i>Live Show Command</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIER 2: EXECUTIVE MEMBERS (4 SLEEK OPERATOR CARDS) -->
+            <div>
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="px-3 py-1 rounded bg-cyanGlow/15 border border-cyanGlow text-cyanGlow font-mono text-xs font-bold tracking-wider">
+                        TIER 02 // EXECUTIVE MEMBERS
+                    </span>
+                    <div class="h-px bg-gradient-to-r from-cyanGlow/60 via-cyanGlow/20 to-transparent flex-1"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Executive 01: Mashukul Islam -->
+                    <div class="hud-card rounded-xl overflow-hidden group flex flex-col justify-between">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div>
+                            <div class="px-4 py-2 bg-obsidian/90 border-b border-cyanGlow/15 flex justify-between items-center font-mono text-[10px] text-cyanGlow/80">
+                                <span>EXEC_ID // 01</span>
+                                <span>OPS_COMMAND</span>
+                            </div>
+                            <!-- Portrait Container (Replace src="" below with your image path/URL) -->
+                            <div class="relative h-72 w-full overflow-hidden bg-midnight">
+                                <!-- PUT MASHUKUL ISLAM PHOTO SRC BELOW -->
+                                <img 
+                                    src="YOUR_IMAGE_SRC_HERE_3.jpg" 
+                                    onerror="this.onerror=null; this.src='https://placehold.co/500x650/0A141E/00F0FF?text=Mashukul+Islam';" 
+                                    alt="Mashukul Islam - Executive Member" 
+                                    class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent pointer-events-none"></div>
+                                <div class="absolute bottom-3 left-4 right-4 pointer-events-none">
+                                    <span class="font-mono text-[10px] text-cyanGlow uppercase tracking-wider block">EXECUTIVE MEMBER</span>
+                                    <h4 class="font-orbitron font-bold text-lg text-white">Mashukul Islam</h4>
+                                </div>
+                            </div>
+                            <div class="p-4 text-xs text-slate-300 font-inter leading-relaxed">
+                                Directs on-ground venue operations, structural rigging coordination, and tactical logistics deployment.
+                            </div>
+                        </div>
+                        <div class="px-4 py-2.5 bg-midnight/80 border-t border-cyanGlow/15 font-mono text-[10px] text-iceBlue flex justify-between">
+                            <span>SECTOR: LOGISTICS</span>
+                            <span>STATUS: ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Executive 02: Alif Rahman -->
+                    <div class="hud-card rounded-xl overflow-hidden group flex flex-col justify-between">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div>
+                            <div class="px-4 py-2 bg-obsidian/90 border-b border-cyanGlow/15 flex justify-between items-center font-mono text-[10px] text-cyanGlow/80">
+                                <span>EXEC_ID // 02</span>
+                                <span>EXEC_OPS</span>
+                            </div>
+                            <!-- Portrait Container (Replace src="" below with your image path/URL) -->
+                            <div class="relative h-72 w-full overflow-hidden bg-midnight">
+                                <!-- PUT ALIF RAHMAN PHOTO SRC BELOW -->
+                                <img 
+                                    src="YOUR_IMAGE_SRC_HERE_4.jpg" 
+                                    onerror="this.onerror=null; this.src='https://placehold.co/500x650/0A141E/00F0FF?text=Alif+Rahman';" 
+                                    alt="Alif Rahman - Executive Member" 
+                                    class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent pointer-events-none"></div>
+                                <div class="absolute bottom-3 left-4 right-4 pointer-events-none">
+                                    <span class="font-mono text-[10px] text-cyanGlow uppercase tracking-wider block">EXECUTIVE MEMBER</span>
+                                    <h4 class="font-orbitron font-bold text-lg text-white">Alif Rahman</h4>
+                                </div>
+                            </div>
+                            <div class="p-4 text-xs text-slate-300 font-inter leading-relaxed">
+                                Leads guest protocol, VIP hospitality engineering, artist relations, and corporate event execution.
+                            </div>
+                        </div>
+                        <div class="px-4 py-2.5 bg-midnight/80 border-t border-cyanGlow/15 font-mono text-[10px] text-iceBlue flex justify-between">
+                            <span>SECTOR: PROTOCOL</span>
+                            <span>STATUS: ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Executive 03: Shommo Dip Saha -->
+                    <div class="hud-card rounded-xl overflow-hidden group flex flex-col justify-between">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div>
+                            <div class="px-4 py-2 bg-obsidian/90 border-b border-cyanGlow/15 flex justify-between items-center font-mono text-[10px] text-cyanGlow/80">
+                                <span>EXEC_ID // 03</span>
+                                <span>CREATIVE_SYS</span>
+                            </div>
+                            <!-- Portrait Container (Replace src="" below with your image path/URL) -->
+                            <div class="relative h-72 w-full overflow-hidden bg-midnight">
+                                <!-- PUT SHOMMO DIP SAHA PHOTO SRC BELOW -->
+                                <img 
+                                    src="YOUR_IMAGE_SRC_HERE_5.jpg" 
+                                    onerror="this.onerror=null; this.src='https://placehold.co/500x650/0A141E/00F0FF?text=Shommo+Dip+Saha';" 
+                                    alt="Shommo Dip Saha - Executive Member" 
+                                    class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent pointer-events-none"></div>
+                                <div class="absolute bottom-3 left-4 right-4 pointer-events-none">
+                                    <span class="font-mono text-[10px] text-cyanGlow uppercase tracking-wider block">EXECUTIVE MEMBER</span>
+                                    <h4 class="font-orbitron font-bold text-lg text-white">Shommo Dip Saha</h4>
+                                </div>
+                            </div>
+                            <div class="p-4 text-xs text-slate-300 font-inter leading-relaxed">
+                                Oversees visual identity systems, bespoke stage aesthetics, experiential branding, and media synchronization.
+                            </div>
+                        </div>
+                        <div class="px-4 py-2.5 bg-midnight/80 border-t border-cyanGlow/15 font-mono text-[10px] text-iceBlue flex justify-between">
+                            <span>SECTOR: CREATIVE</span>
+                            <span>STATUS: ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Executive 04: Ahnaf Shahriar Rafi -->
+                    <div class="hud-card rounded-xl overflow-hidden group flex flex-col justify-between">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div>
+                            <div class="px-4 py-2 bg-obsidian/90 border-b border-cyanGlow/15 flex justify-between items-center font-mono text-[10px] text-cyanGlow/80">
+                                <span>EXEC_ID // 04</span>
+                                <span>FIELD_CONTROL</span>
+                            </div>
+                            <!-- Portrait Container (Replace src="" below with your image path/URL) -->
+                            <div class="relative h-72 w-full overflow-hidden bg-midnight">
+                                <!-- PUT AHNAF SHAHRIAR RAFI PHOTO SRC BELOW -->
+                                <img 
+                                    src="YOUR_IMAGE_SRC_HERE_6.jpg" 
+                                    onerror="this.onerror=null; this.src='https://placehold.co/500x650/0A141E/00F0FF?text=Ahnaf+Shahriar+Rafi';" 
+                                    alt="Ahnaf Shahriar Rafi - Executive Member" 
+                                    class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent pointer-events-none"></div>
+                                <div class="absolute bottom-3 left-4 right-4 pointer-events-none">
+                                    <span class="font-mono text-[10px] text-cyanGlow uppercase tracking-wider block">EXECUTIVE MEMBER</span>
+                                    <h4 class="font-orbitron font-bold text-lg text-white">Ahnaf Shahriar Rafi</h4>
+                                </div>
+                            </div>
+                            <div class="p-4 text-xs text-slate-300 font-inter leading-relaxed">
+                                Manages access control matrices, security perimeter grids, ticketing architecture, and crowd flow dynamics.
+                            </div>
+                        </div>
+                        <div class="px-4 py-2.5 bg-midnight/80 border-t border-cyanGlow/15 font-mono text-[10px] text-iceBlue flex justify-between">
+                            <span>SECTOR: SECURITY & FLOW</span>
+                            <span>STATUS: ACTIVE</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== 4. [03. SERVICES] CORE CAPABILITIES MATRIX ==================== -->
+    <section id="services" class="py-20 lg:py-28 relative z-10 border-b border-cyanGlow/15">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="font-mono text-xs text-cyanGlow tracking-widest uppercase mb-2">
+                    // SECTION 03 : CORE CAPABILITIES MATRIX
+                </div>
+                <h2 class="font-orbitron font-bold text-3xl sm:text-4xl text-white">
+                    FULL-SPECTRUM <span class="text-cyanGlow text-glow">EVENT ENGINEERING</span>
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base mt-3">
+                    Every module is custom-calibrated to your venue, audience scale, and brand identity across Khulna and nationwide.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service Module 01 -->
+                <div class="hud-card p-6 rounded-xl flex flex-col justify-between">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 font-mono text-[10px] text-cyanGlow">SYS_MOD // 01</span>
+                            <i class="fa-solid fa-building-columns text-cyanGlow text-xl"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">CORPORATE & CLUB GALAS</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                            AGM summits, executive banquets, Khulna Club nights, formal farewells, and high-profile diplomatic or institutional gatherings.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-cyanGlow/15 flex justify-between items-center font-mono text-[11px] text-iceBlue">
+                        <span>PROTOCOL: EXECUTIVE</span>
+                        <span>READY</span>
+                    </div>
+                </div>
+
+                <!-- Service Module 02 -->
+                <div class="hud-card p-6 rounded-xl flex flex-col justify-between">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 font-mono text-[10px] text-cyanGlow">SYS_MOD // 02</span>
+                            <i class="fa-solid fa-music text-cyanGlow text-xl"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">CONCERTS & CULTURAL FESTS</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                            Arena-grade live music production, university fests, artist riders, barricade engineering, and high-SPL line-array acoustics.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-cyanGlow/15 flex justify-between items-center font-mono text-[11px] text-iceBlue">
+                        <span>PROTOCOL: HIGH-DECIBEL</span>
+                        <span>READY</span>
+                    </div>
+                </div>
+
+                <!-- Service Module 03 -->
+                <div class="hud-card p-6 rounded-xl flex flex-col justify-between">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 font-mono text-[10px] text-cyanGlow">SYS_MOD // 03</span>
+                            <i class="fa-solid fa-cubes text-cyanGlow text-xl"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">STAGE & AV ARCHITECTURE</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                            Custom 3D stage fabrication, P3/P2.5 LED matrix walls, intelligent beam/wash lighting, laser shows, and pyrotechnic synchronization.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-cyanGlow/15 flex justify-between items-center font-mono text-[11px] text-iceBlue">
+                        <span>PROTOCOL: STRUCTURAL</span>
+                        <span>READY</span>
+                    </div>
+                </div>
+
+                <!-- Service Module 04 -->
+                <div class="hud-card p-6 rounded-xl flex flex-col justify-between">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 font-mono text-[10px] text-cyanGlow">SYS_MOD // 04</span>
+                            <i class="fa-solid fa-pen-ruler text-cyanGlow text-xl"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">VISUAL IDENTITY & MERCH</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                            Bespoke event branding, monumental entry gates, thematic backdrops, serialized raffle tickets, VIP PVC passes, and custom apparel.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-cyanGlow/15 flex justify-between items-center font-mono text-[11px] text-iceBlue">
+                        <span>PROTOCOL: CREATIVE CAD</span>
+                        <span>READY</span>
+                    </div>
+                </div>
+
+                <!-- Service Module 05 -->
+                <div class="hud-card p-6 rounded-xl flex flex-col justify-between">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 font-mono text-[10px] text-cyanGlow">SYS_MOD // 05</span>
+                            <i class="fa-solid fa-rocket text-cyanGlow text-xl"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">BRAND ACTIVATIONS</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                            Immersive product launches, trade pavilion architecture, interactive tech booths, and experiential marketing campaigns in Khulna.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-cyanGlow/15 flex justify-between items-center font-mono text-[11px] text-iceBlue">
+                        <span>PROTOCOL: EXPERIENTIAL</span>
+                        <span>READY</span>
+                    </div>
+                </div>
+
+                <!-- Service Module 06 -->
+                <div class="hud-card p-6 rounded-xl flex flex-col justify-between">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 font-mono text-[10px] text-cyanGlow">SYS_MOD // 06</span>
+                            <i class="fa-solid fa-gem text-cyanGlow text-xl"></i>
+                        </div>
+                        <h3 class="font-orbitron font-bold text-lg text-white mb-2">BESPOKE LUXURY EVENTS</h3>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                            Signature architectural wedding receptions, private milestone galas, ambient scenic design, and curated culinary hospitality.
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-cyanGlow/15 flex justify-between items-center font-mono text-[11px] text-iceBlue">
+                        <span>PROTOCOL: BESPOKE</span>
+                        <span>READY</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 5. [04. BLUEPRINT LAB] INTERACTIVE EVENT CAD CONFIGURATOR ==================== -->
+    <section id="blueprint-lab" class="py-20 lg:py-28 relative z-10 border-b border-cyanGlow/15 bg-midnight/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-cyanGlow/15 border border-cyanGlow/40 font-mono text-xs text-cyanGlow mb-3">
+                        <i class="fa-solid fa-sliders"></i> INTERACTIVE SYSTEM // BLUEPRINT LAB v2.6
+                    </div>
+                    <h2 class="font-orbitron font-bold text-3xl sm:text-4xl text-white">
+                        CONFIGURE YOUR <span class="text-cyanGlow text-glow">EVENT SPECIFICATION</span>
+                    </h2>
+                </div>
+                <p class="text-slate-300 text-xs sm:text-sm max-w-md font-mono">
+                    Adjust parameters below to generate a real-time technical production blueprint and dispatch it directly to our Khulna engineering desk.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left Column: Interactive Controls -->
+                <div class="lg:col-span-7 hud-card p-6 sm:p-8 rounded-xl space-y-7">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+
+                    <!-- Step 1: Select Event Architecture Type -->
+                    <div>
+                        <label class="block font-mono text-xs text-cyanGlow uppercase tracking-wider mb-3">
+                            01 // SELECT EVENT ARCHITECTURE TYPE
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="eventTypeSelector">
+                            <button type="button" data-type="Corporate Gala / Club Night" data-base-kw="25" data-base-crew="14" class="event-type-btn active text-left p-3.5 rounded border border-cyanGlow bg-cyanGlow/20 text-white font-orbitron text-xs font-bold transition-all flex items-center justify-between">
+                                <span>CORPORATE / CLUB GALA</span>
+                                <i class="fa-solid fa-check-circle text-cyanGlow"></i>
+                            </button>
+                            <button type="button" data-type="Live Concert / Cultural Fest" data-base-kw="65" data-base-crew="28" class="event-type-btn text-left p-3.5 rounded border border-cyanGlow/30 bg-obsidian/60 text-slate-300 hover:border-cyanGlow/60 font-orbitron text-xs font-bold transition-all flex items-center justify-between">
+                                <span>CONCERT / CULTURAL FEST</span>
+                                <i class="fa-regular fa-circle text-cyanGlow/50"></i>
+                            </button>
+                            <button type="button" data-type="Brand Launch / Expo Pavilion" data-base-kw="35" data-base-crew="18" class="event-type-btn text-left p-3.5 rounded border border-cyanGlow/30 bg-obsidian/60 text-slate-300 hover:border-cyanGlow/60 font-orbitron text-xs font-bold transition-all flex items-center justify-between">
+                                <span>BRAND LAUNCH / EXPO</span>
+                                <i class="fa-regular fa-circle text-cyanGlow/50"></i>
+                            </button>
+                            <button type="button" data-type="Bespoke Luxury Reception" data-base-kw="30" data-base-crew="20" class="event-type-btn text-left p-3.5 rounded border border-cyanGlow/30 bg-obsidian/60 text-slate-300 hover:border-cyanGlow/60 font-orbitron text-xs font-bold transition-all flex items-center justify-between">
+                                <span>BESPOKE LUXURY GALA</span>
+                                <i class="fa-regular fa-circle text-cyanGlow/50"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Audience Capacity Slider -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="capacitySlider" class="font-mono text-xs text-cyanGlow uppercase tracking-wider">
+                                02 // TARGET AUDIENCE CAPACITY
+                            </label>
+                            <span id="capacityReadout" class="font-orbitron font-bold text-lg text-iceBlue text-glow">500 GUESTS</span>
+                        </div>
+                        <input id="capacitySlider" type="range" min="100" max="5000" step="100" value="500" class="w-full">
+                        <div class="flex justify-between font-mono text-[10px] text-slate-400 mt-1.5">
+                            <span>100 PAX (INTIMATE)</span>
+                            <span>1,500 PAX (CONVENTION)</span>
+                            <span>3,000 PAX (ARENA)</span>
+                            <span>5,000+ PAX (STADIUM)</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Technical Production Subsystems -->
+                    <div>
+                        <label class="block font-mono text-xs text-cyanGlow uppercase tracking-wider mb-3">
+                            03 // ENGAGE PRODUCTION SUBSYSTEMS
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 p-3 rounded border border-cyanGlow/30 bg-obsidian/70 cursor-pointer hover:border-cyanGlow">
+                                <input type="checkbox" checked class="mod-check accent-cyanGlow w-4 h-4" data-mod="3D Custom Stage & Truss" data-kw="15" data-crew="6">
+                                <span class="text-xs font-mono text-slate-200">3D Stage & Truss Rigging</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded border border-cyanGlow/30 bg-obsidian/70 cursor-pointer hover:border-cyanGlow">
+                                <input type="checkbox" checked class="mod-check accent-cyanGlow w-4 h-4" data-mod="Line-Array Concert Audio" data-kw="25" data-crew="4">
+                                <span class="text-xs font-mono text-slate-200">Line-Array Concert Audio</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded border border-cyanGlow/30 bg-obsidian/70 cursor-pointer hover:border-cyanGlow">
+                                <input type="checkbox" checked class="mod-check accent-cyanGlow w-4 h-4" data-mod="P3 LED Matrix Wall & DMX" data-kw="18" data-crew="5">
+                                <span class="text-xs font-mono text-slate-200">P3 LED Matrix & DMX Lights</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 rounded border border-cyanGlow/30 bg-obsidian/70 cursor-pointer hover:border-cyanGlow">
+                                <input type="checkbox" checked class="mod-check accent-cyanGlow w-4 h-4" data-mod="VIP Passes, Banners & Security" data-kw="5" data-crew="8">
+                                <span class="text-xs font-mono text-slate-200">Passes, Branding & Security</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Live CAD Schematic Output & Spec Telemetry -->
+                <div class="lg:col-span-5 hud-card p-6 sm:p-8 rounded-xl border-cyanGlow/50 bg-obsidian/90">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+
+                    <div class="flex items-center justify-between border-b border-cyanGlow/20 pb-3 mb-4">
+                        <span class="font-mono text-xs text-cyanGlow font-bold">[GENERATED CAD TELEMETRY]</span>
+                        <span id="cadTierLabel" class="px-2 py-0.5 rounded bg-cyanGlow text-obsidian font-orbitron font-bold text-[10px]">TIER // PRO-SCALE</span>
+                    </div>
+
+                    <!-- Dynamic SVG Stage CAD Schematic Preview -->
+                    <div class="relative bg-midnight/90 rounded-lg border border-cyanGlow/25 p-4 mb-5 flex flex-col items-center">
+                        <svg id="stageCadPreview" viewBox="0 0 280 140" class="w-full h-36 svg-glow">
+                            <!-- Grid lines -->
+                            <line x1="0" y1="70" x2="280" y2="70" stroke="#00F0FF" stroke-width="0.4" stroke-dasharray="3 3" opacity="0.4" />
+                            <line x1="140" y1="0" x2="140" y2="140" stroke="#00F0FF" stroke-width="0.4" stroke-dasharray="3 3" opacity="0.4" />
+                            <!-- Dynamic Stage Box -->
+                            <rect id="svgStageBox" x="70" y="18" width="140" height="36" fill="rgba(0, 240, 255, 0.12)" stroke="#00F0FF" stroke-width="1.8" />
+                            <!-- LED Screen Line -->
+                            <line x1="85" y1="23" x2="195" y2="23" stroke="#7DF9FF" stroke-width="3" />
+                            <!-- Left & Right Line Array Towers -->
+                            <rect x="52" y="24" width="12" height="24" fill="none" stroke="#7DF9FF" stroke-width="1.2" />
+                            <rect x="216" y="24" width="12" height="24" fill="none" stroke="#7DF9FF" stroke-width="1.2" />
+                            <!-- Sound Acoustic Waves -->
+                            <path d="M 65 65 Q 140 95 215 65" fill="none" stroke="#00F0FF" stroke-width="1" stroke-dasharray="4 2" opacity="0.75" />
+                            <path d="M 45 90 Q 140 125 235 90" fill="none" stroke="#00F0FF" stroke-width="1" stroke-dasharray="4 2" opacity="0.5" />
+                            <!-- FOH Control Booth -->
+                            <rect x="122" y="114" width="36" height="14" fill="rgba(125, 249, 255, 0.2)" stroke="#7DF9FF" stroke-width="1" />
+                            <text x="140" y="123" text-anchor="middle" fill="#FFF" font-family="JetBrains Mono" font-size="6">FOH CTRL</text>
+                        </svg>
+                        <div class="w-full flex justify-between font-mono text-[10px] text-cyanGlow/80 mt-1">
+                            <span id="cadStageLabel">STAGE_SPAN // 40 FT x 20 FT</span>
+                            <span>LOC // KHULNA</span>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Specs -->
+                    <div class="space-y-3 font-mono text-xs mb-6">
+                        <div class="flex justify-between py-1.5 border-b border-white/10">
+                            <span class="text-slate-400">EVENT CLASSIFICATION:</span>
+                            <span id="specType" class="text-iceBlue font-semibold text-right">Corporate Gala / Club Night</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-white/10">
+                            <span class="text-slate-400">EST. POWER LOAD:</span>
+                            <span id="specPower" class="text-cyanGlow font-bold">92 kW (3-Phase Gen)</span>
+                        </div>
+                        <div class="flex justify-between py-1.5 border-b border-white/10">
+                            <span class="text-slate-400">RECOMMENDED CREW:</span>
+                            <span id="specCrew" class="text-white font-bold">33 Engineers & Staff</span>
+                        </div>
+                        <div class="py-1.5">
+                            <span class="text-slate-400 block mb-1.5">ACTIVE MODULES:</span>
+                            <div id="specModulesList" class="flex flex-wrap gap-1.5"></div>
+                        </div>
+                    </div>
+
+                    <!-- Dual Hotline WhatsApp & Copy Dispatch Buttons -->
+                    <div class="space-y-2.5">
+                        <div class="font-mono text-[10px] text-cyanGlow uppercase tracking-wider">
+                            DISPATCH SPEC SHEET VIA WHATSAPP:
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <button id="transmitWhatsappBtn1" type="button" class="w-full py-3 px-3 rounded bg-cyanGlow text-obsidian font-orbitron font-bold text-[11px] tracking-wider shadow-neon hover:bg-iceBlue transition-all flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>LINE 1: 01788-706868</span>
+                            </button>
+                            <button id="transmitWhatsappBtn2" type="button" class="w-full py-3 px-3 rounded bg-iceBlue text-obsidian font-orbitron font-bold text-[11px] tracking-wider shadow-neon hover:bg-white transition-all flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>LINE 2: 01703-700799</span>
+                            </button>
+                        </div>
+                        <button id="copySpecBtn" type="button" class="w-full py-2.5 px-4 rounded border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow/10 font-mono text-xs transition-all flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-copy"></i>
+                            <span>COPY TECHNICAL BLUEPRINT TO CLIPBOARD</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 6. [05. PORTFOLIO] EXECUTED BLUEPRINTS ==================== -->
+    <section id="portfolio" class="py-20 lg:py-28 relative z-10 border-b border-cyanGlow/15">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <div class="font-mono text-xs text-cyanGlow tracking-widest uppercase mb-2">
+                        // SECTION 05 : EXECUTED BLUEPRINT ARCHIVE
+                    </div>
+                    <h2 class="font-orbitron font-bold text-3xl sm:text-4xl text-white">
+                        ENGINEERED FOR THE <span class="text-cyanGlow text-glow">UNFORGETTABLE</span>
+                    </h2>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex flex-wrap gap-2 font-mono text-xs">
+                    <button type="button" data-filter="all" class="portfolio-filter active px-3.5 py-1.5 rounded bg-cyanGlow text-obsidian font-bold transition-all">ALL_LOGS</button>
+                    <button type="button" data-filter="corporate" class="portfolio-filter px-3.5 py-1.5 rounded border border-cyanGlow/30 text-slate-300 hover:border-cyanGlow transition-all">CORPORATE & CLUB</button>
+                    <button type="button" data-filter="concert" class="portfolio-filter px-3.5 py-1.5 rounded border border-cyanGlow/30 text-slate-300 hover:border-cyanGlow transition-all">CONCERTS & FESTS</button>
+                    <button type="button" data-filter="branding" class="portfolio-filter px-3.5 py-1.5 rounded border border-cyanGlow/30 text-slate-300 hover:border-cyanGlow transition-all">BRANDING & PASSES</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolioGrid">
+                <!-- Case 1 -->
+                <div class="portfolio-item hud-card rounded-xl overflow-hidden flex flex-col justify-between" data-category="corporate">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="h-44 bg-gradient-to-br from-midnight via-panel to-obsidian p-5 flex flex-col justify-between border-b border-cyanGlow/20 relative">
+                            <div class="flex justify-between items-center font-mono text-[10px] text-cyanGlow">
+                                <span>ARCHIVE // BP-KHL-01</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">EXECUTED</span>
+                            </div>
+                            <div class="my-auto flex items-center gap-3">
+                                <i class="fa-solid fa-champagne-glasses text-3xl text-cyanGlow"></i>
+                                <div>
+                                    <div class="font-mono text-[10px] text-slate-400">KHULNA CLUB / EXECUTIVE GALA</div>
+                                    <h3 class="font-orbitron font-bold text-base text-white">FAREWELL & GALA NIGHT</h3>
+                                </div>
+                            </div>
+                            <div class="font-mono text-[10px] text-iceBlue">STAGE + RAFFLE + SECURITY PASSES</div>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                Full-scale thematic decor, stage lighting architecture, serialized raffle draw tickets, and custom VIP credential lanyards.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-obsidian/70 border-t border-cyanGlow/15 flex justify-between font-mono text-[10px] text-cyanGlow">
+                        <span>SCALE: 800+ GUESTS</span>
+                        <span>ZERO LATENCY</span>
+                    </div>
+                </div>
+
+                <!-- Case 2 -->
+                <div class="portfolio-item hud-card rounded-xl overflow-hidden flex flex-col justify-between" data-category="concert">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="h-44 bg-gradient-to-br from-midnight via-panel to-obsidian p-5 flex flex-col justify-between border-b border-cyanGlow/20 relative">
+                            <div class="flex justify-between items-center font-mono text-[10px] text-cyanGlow">
+                                <span>ARCHIVE // BP-KHL-02</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">EXECUTED</span>
+                            </div>
+                            <div class="my-auto flex items-center gap-3">
+                                <i class="fa-solid fa-guitar text-3xl text-cyanGlow"></i>
+                                <div>
+                                    <div class="font-mono text-[10px] text-slate-400">OPEN-AIR ARENA // KHULNA</div>
+                                    <h3 class="font-orbitron font-bold text-base text-white">CULTURAL FEST & CONCERT</h3>
+                                </div>
+                            </div>
+                            <div class="font-mono text-[10px] text-iceBlue">LINE-ARRAY AUDIO + TRUSS + DMX</div>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                Heavy-duty aluminum truss rigging, dual-hang concert line arrays, synchronized DMX beam matrix, and multi-tier crowd barricades.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-obsidian/70 border-t border-cyanGlow/15 flex justify-between font-mono text-[10px] text-cyanGlow">
+                        <span>SCALE: 3,500+ PAX</span>
+                        <span>HIGH IMPACT</span>
+                    </div>
+                </div>
+
+                <!-- Case 3 -->
+                <div class="portfolio-item hud-card rounded-xl overflow-hidden flex flex-col justify-between" data-category="branding">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                    <div>
+                        <div class="h-44 bg-gradient-to-br from-midnight via-panel to-obsidian p-5 flex flex-col justify-between border-b border-cyanGlow/20 relative">
+                            <div class="flex justify-between items-center font-mono text-[10px] text-cyanGlow">
+                                <span>ARCHIVE // BP-KHL-03</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">EXECUTED</span>
+                            </div>
+                            <div class="my-auto flex items-center gap-3">
+                                <i class="fa-solid fa-id-card-clip text-3xl text-cyanGlow"></i>
+                                <div>
+                                    <div class="font-mono text-[10px] text-slate-400">VISUAL IDENTITY SYSTEM</div>
+                                    <h3 class="font-orbitron font-bold text-base text-white">BESPOKE EVENT BRANDING</h3>
+                                </div>
+                            </div>
+                            <div class="font-mono text-[10px] text-iceBlue">BANNERS + ACCESS CARDS + MERCH</div>
+                        </div>
+                        <div class="p-5">
+                            <p class="text-slate-300 text-xs leading-relaxed">
+                                End-to-end visual identity engineering: 3D entry gates, photo booths, serialized VIP passes, and crew uniform merchandise.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-obsidian/70 border-t border-cyanGlow/15 flex justify-between font-mono text-[10px] text-cyanGlow">
+                        <span>PRECISION PRINT</span>
+                        <span>CUSTOM CAD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 7. [06. COMMS] COMMAND CENTER & CONTACT ==================== -->
+    <section id="comms" class="py-20 lg:py-28 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="font-mono text-xs text-cyanGlow tracking-widest uppercase mb-2">
+                    // SECTION 06 : KHULNA COMMAND CENTER & DIRECT COMMS
+                </div>
+                <h2 class="font-orbitron font-bold text-3xl sm:text-4xl text-white">
+                    INITIATE YOUR <span class="text-cyanGlow text-glow">EVENT BLUEPRINT</span>
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base mt-3">
+                    Connect directly with our Founding Panel and Production Architects in Khulna for consultations, venue surveys, and custom technical proposals.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left Column: Dual Direct Hotlines, Location & Quick Actions -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Dual Phone Command Card -->
+                    <div class="hud-card p-6 sm:p-7 rounded-xl border-cyanGlow/60 space-y-6">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+
+                        <!-- Line 1 -->
+                        <div class="pb-5 border-b border-cyanGlow/20">
+                            <div class="flex items-center justify-between font-mono text-[11px] text-cyanGlow mb-1">
+                                <span>[PRIMARY HOTLINE // CHANNEL 01]</span>
+                                <span class="text-emerald-400">● ONLINE</span>
+                            </div>
+                            <div class="font-orbitron font-black text-2xl sm:text-3xl text-white tracking-wider mb-3">
+                                +880 1788-706868
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <a href="tel:+8801788706868" class="py-2.5 px-3 rounded bg-cyanGlow text-obsidian font-orbitron font-bold text-[11px] text-center shadow-neon hover:bg-iceBlue transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-phone"></i> CALL
+                                </a>
+                                <a href="https://wa.me/8801788706868" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded border border-cyanGlow bg-cyanGlow/15 text-iceBlue hover:bg-cyanGlow/25 font-orbitron font-bold text-[11px] text-center transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i> WHATSAPP
+                                </a>
+                                <button id="copyPhoneBtn1" type="button" class="py-2.5 px-3 rounded border border-cyanGlow/40 text-slate-200 hover:text-cyanGlow font-mono text-[11px] transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-regular fa-copy"></i> COPY
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Line 2 -->
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-[11px] text-iceBlue mb-1">
+                                <span>[COMMAND HOTLINE // CHANNEL 02]</span>
+                                <span class="text-emerald-400">● ONLINE</span>
+                            </div>
+                            <div class="font-orbitron font-black text-2xl sm:text-3xl text-white tracking-wider mb-3">
+                                +880 1703-700799
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <a href="tel:+8801703700799" class="py-2.5 px-3 rounded bg-iceBlue text-obsidian font-orbitron font-bold text-[11px] text-center shadow-neon hover:bg-white transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-phone"></i> CALL
+                                </a>
+                                <a href="https://wa.me/8801703700799" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded border border-iceBlue bg-iceBlue/15 text-white hover:bg-iceBlue/25 font-orbitron font-bold text-[11px] text-center transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i> WHATSAPP
+                                </a>
+                                <button id="copyPhoneBtn2" type="button" class="py-2.5 px-3 rounded border border-cyanGlow/40 text-slate-200 hover:text-cyanGlow font-mono text-[11px] transition-all flex items-center justify-center gap-1.5">
+                                    <i class="fa-regular fa-copy"></i> COPY
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Khulna HQ Coordinates Card -->
+                    <div class="hud-card p-6 sm:p-7 rounded-xl">
+                        <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                        <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-cyanGlow/15 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow text-xl shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <div class="font-mono text-xs text-cyanGlow">HEADQUARTERS // SECTOR_KHL</div>
+                                <h4 class="font-orbitron font-bold text-lg text-white mt-0.5">Khulna, Bangladesh</h4>
+                                <p class="text-slate-300 text-xs mt-1 leading-relaxed">
+                                    Full on-ground deployment across Khulna City, Khulna Division, and nationwide destination events.
+                                </p>
+                                <div class="font-mono text-[11px] text-iceBlue mt-3">
+                                    GPS: 22.8456° N, 89.5403° E
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Project Brief Transmission Form -->
+                <div class="lg:col-span-7 hud-card p-6 sm:p-8 rounded-xl">
+                    <div class="hud-corner-tl"></div><div class="hud-corner-tr"></div>
+                    <div class="hud-corner-bl"></div><div class="hud-corner-br"></div>
+
+                    <div class="flex items-center justify-between border-b border-cyanGlow/20 pb-4 mb-6">
+                        <div>
+                            <div class="font-mono text-xs text-cyanGlow">[DIRECT DISPATCH PROTOCOL]</div>
+                            <h3 class="font-orbitron font-bold text-xl text-white">PROJECT BRIEF TRANSMISSION</h3>
+                        </div>
+                        <i class="fa-solid fa-paper-plane text-cyanGlow text-xl"></i>
+                    </div>
+
+                    <form id="projectBriefForm" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-mono text-xs text-slate-300 mb-1.5">CLIENT / COMMANDER NAME *</label>
+                                <input type="text" id="clientName" required placeholder="Enter your full name" class="w-full px-4 py-3 rounded bg-obsidian/90 border border-cyanGlow/30 text-white text-sm focus:border-cyanGlow focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-mono text-xs text-slate-300 mb-1.5">CONTACT PHONE / WHATSAPP *</label>
+                                <input type="tel" id="clientPhone" required placeholder="+880 1XXX-XXXXXX" class="w-full px-4 py-3 rounded bg-obsidian/90 border border-cyanGlow/30 text-white text-sm focus:border-cyanGlow focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-mono text-xs text-slate-300 mb-1.5">EVENT ARCHITECTURE TYPE *</label>
+                                <select id="clientEventType" class="w-full px-4 py-3 rounded bg-obsidian/90 border border-cyanGlow/30 text-white text-sm focus:border-cyanGlow focus:outline-none">
+                                    <option value="Corporate Gala / Club Night">Corporate Gala / Club Night</option>
+                                    <option value="Live Concert / Cultural Fest">Live Concert / Cultural Fest</option>
+                                    <option value="Brand Launch / Activation">Brand Launch / Activation</option>
+                                    <option value="Bespoke Wedding / Luxury Gala">Bespoke Wedding / Luxury Gala</option>
+                                    <option value="Custom Stage / AV Production">Custom Stage / AV Production</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-mono text-xs text-slate-300 mb-1.5">DISPATCH TO KHULNA HOTLINE *</label>
+                                <select id="targetHotline" class="w-full px-4 py-3 rounded bg-obsidian/90 border border-cyanGlow/30 text-cyanGlow font-mono text-sm focus:border-cyanGlow focus:outline-none">
+                                    <option value="8801788706868">Line 01: +880 1788-706868</option>
+                                    <option value="8801703700799">Line 02: +880 1703-700799</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-mono text-xs text-slate-300 mb-1.5">VENUE LOCATION & TARGET DATE (KHULNA / OTHER)</label>
+                            <input type="text" id="clientVenue" placeholder="e.g., Khulna Club / Convention Hall - Dec 2026" class="w-full px-4 py-3 rounded bg-obsidian/90 border border-cyanGlow/30 text-white text-sm focus:border-cyanGlow focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block font-mono text-xs text-slate-300 mb-1.5">MISSION BRIEF & REQUIREMENTS</label>
+                            <textarea id="clientMessage" rows="3" placeholder="Describe your guest count, stage, lighting, branding, or full event requirements..." class="w-full px-4 py-3 rounded bg-obsidian/90 border border-cyanGlow/30 text-white text-sm focus:border-cyanGlow focus:outline-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 rounded bg-cyanGlow text-obsidian font-orbitron font-extrabold text-xs sm:text-sm tracking-wider shadow-neon hover:bg-iceBlue hover:shadow-neon-strong transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-satellite-dish"></i>
+                            <span>TRANSMIT PROJECT BRIEF TO KHULNA HQ</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 8. FOOTER ==================== -->
+    <footer class="border-t border-cyanGlow/20 bg-obsidian/95 py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-cyanGlow/15 border border-cyanGlow flex items-center justify-center text-cyanGlow font-orbitron font-bold">
+                    M
+                </div>
+                <div>
+                    <div class="font-orbitron font-bold text-sm text-white tracking-wider">THE BLUEPRINT EVENT MANAGEMENT</div>
+                    <div class="font-mono text-[11px] text-slate-400">KHULNA, BANGLADESH // +880 1788-706868 | +880 1703-700799</div>
+                </div>
+            </div>
+            <div class="font-mono text-xs text-slate-400 text-center md:text-right">
+                <div>FOUNDING PANEL: ABDULLAH BIN MURSHED FATTAH & NIBIR GUHA ROY</div>
+                <div class="text-cyanGlow/70 text-[11px] mt-0.5">© 2026 THE BLUEPRINT EVENT MANAGEMENT. ALL SYSTEMS NOMINAL.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating HUD Toast Notification -->
+    <div id="hudToast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300">
+        <div class="hud-card px-5 py-3.5 rounded-xl border border-cyanGlow bg-obsidian/95 shadow-neon flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-cyanGlow text-lg"></i>
+            <div>
+                <div class="font-mono text-[10px] text-cyanGlow">SYSTEM NOTIFICATION</div>
+                <div id="hudToastMsg" class="font-orbitron font-bold text-xs text-white">Action Completed</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN APPLICATION JAVASCRIPT ==================== -->
+    <script>
+        // 1. HUD Toast Notification System
+        let toastTimeout = null;
+        function showHudToast(message) {
+            const toast = document.getElementById('hudToast');
+            const msgEl = document.getElementById('hudToastMsg');
+            if (!toast || !msgEl) return;
+            msgEl.textContent = message;
+            toast.classList.remove('hidden');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        // 2. Clipboard Helper
+        function copyTextToClipboard(text, successMsg) {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                showHudToast(successMsg);
+            } catch (err) {
+                showHudToast('Copy ready');
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        // 3. Live Bangladesh Standard Time (BST) Clock
+        function updateClock() {
+            const clockEl = document.getElementById('liveClock');
+            if (!clockEl) return;
+            const now = new Date();
+            clockEl.textContent = `SYS_TIME: ${now.toLocaleTimeString('en-US', { hour12: false })} BST`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 4. Hero Logo View Switcher (Vector CAD vs Uploaded Emblem)
+        const viewSvgLogoBtn = document.getElementById('viewSvgLogoBtn');
+        const viewImgLogoBtn = document.getElementById('viewImgLogoBtn');
+        const heroSvgLogoContainer = document.getElementById('heroSvgLogoContainer');
+        const heroImgLogoContainer = document.getElementById('heroImgLogoContainer');
+
+        if (viewSvgLogoBtn && viewImgLogoBtn) {
+            viewSvgLogoBtn.addEventListener('click', () => {
+                heroSvgLogoContainer.classList.remove('hidden');
+                heroImgLogoContainer.classList.add('hidden');
+                viewSvgLogoBtn.className = 'px-3 py-1 rounded bg-cyanGlow text-obsidian font-bold transition-all';
+                viewImgLogoBtn.className = 'px-3 py-1 rounded border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow/10 transition-all';
+            });
+            viewImgLogoBtn.addEventListener('click', () => {
+                heroImgLogoContainer.classList.remove('hidden');
+                heroSvgLogoContainer.classList.add('hidden');
+                viewImgLogoBtn.className = 'px-3 py-1 rounded bg-cyanGlow text-obsidian font-bold transition-all';
+                viewSvgLogoBtn.className = 'px-3 py-1 rounded border border-cyanGlow/40 text-cyanGlow hover:bg-cyanGlow/10 transition-all';
+            });
+        }
+
+        // 5. Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+        }
+
+        // 7. Interactive CAD Blueprint Canvas Background (with defensive null-checks)
+        const canvas = document.getElementById('cadCanvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            const coordsEl = document.getElementById('mouseCoords');
+            if (coordsEl) {
+                coordsEl.textContent = `CURSOR_CAD // X: ${String(mouseX).padStart(4, '0')}.00 | Y: ${String(mouseY).padStart(4, '0')}.00`;
+            }
+        });
+
+        function animateCadCanvas() {
+            if (!canvas || !ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.22)';
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            ctx.moveTo(0, mouseY);
+            ctx.lineTo(canvas.width, mouseY);
+            ctx.moveTo(mouseX, 0);
+            ctx.lineTo(mouseX, canvas.height);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(mouseX, mouseY, 24, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(125, 249, 255, 0.45)';
+            ctx.stroke();
+
+            requestAnimationFrame(animateCadCanvas);
+        }
+
+        window.onload = function() {
+            animateCadCanvas();
+            updateBlueprintConfigurator();
+        };
+
+        // 8. Interactive Blueprint Lab Event Configurator Logic
+        let selectedEventType = 'Corporate Gala / Club Night';
+        let baseKw = 25;
+        let baseCrew = 14;
+
+        const typeButtons = document.querySelectorAll('.event-type-btn');
+        const capacitySlider = document.getElementById('capacitySlider');
+        const capacityReadout = document.getElementById('capacityReadout');
+        const modChecks = document.querySelectorAll('.mod-check');
+
+        typeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                typeButtons.forEach(b => {
+                    b.classList.remove('active', 'border-cyanGlow', 'bg-cyanGlow/20', 'text-white');
+                    b.classList.add('border-cyanGlow/30', 'bg-obsidian/60', 'text-slate-300');
+                });
+                btn.classList.add('active', 'border-cyanGlow', 'bg-cyanGlow/20', 'text-white');
+                btn.classList.remove('border-cyanGlow/30', 'bg-obsidian/60', 'text-slate-300');
+
+                selectedEventType = btn.getAttribute('data-type');
+                baseKw = parseInt(btn.getAttribute('data-base-kw'), 10);
+                baseCrew = parseInt(btn.getAttribute('data-base-crew'), 10);
+                updateBlueprintConfigurator();
+            });
+        });
+
+        if (capacitySlider) {
+            capacitySlider.addEventListener('input', updateBlueprintConfigurator);
+        }
+        modChecks.forEach(chk => chk.addEventListener('change', updateBlueprintConfigurator));
+
+        function updateBlueprintConfigurator() {
+            if (!capacitySlider) return;
+            const guests = parseInt(capacitySlider.value, 10);
+            if (capacityReadout) capacityReadout.textContent = `${guests.toLocaleString()} GUESTS`;
+
+            let totalKw = baseKw + Math.round(guests * 0.018);
+            let totalCrew = baseCrew + Math.round(guests / 180);
+            const activeMods = [];
+
+            modChecks.forEach(chk => {
+                if (chk.checked) {
+                    totalKw += parseInt(chk.getAttribute('data-kw'), 10);
+                    totalCrew += parseInt(chk.getAttribute('data-crew'), 10);
+                    activeMods.push(chk.getAttribute('data-mod'));
+                }
+            });
+
+            let stageSpan = '32 FT x 16 FT';
+            let tier = 'TIER // EXECUTIVE';
+            let boxWidth = 140;
+            if (guests >= 1000 && guests < 2500) {
+                stageSpan = '48 FT x 24 FT';
+                tier = 'TIER // ARENA-PRO';
+                boxWidth = 175;
+            } else if (guests >= 2500) {
+                stageSpan = '64 FT x 32 FT (MEGA RIG)';
+                tier = 'TIER // FESTIVAL-PRIME';
+                boxWidth = 200;
+            }
+
+            const stageLabel = document.getElementById('cadStageLabel');
+            const tierLabel = document.getElementById('cadTierLabel');
+            const svgStage = document.getElementById('svgStageBox');
+            if (stageLabel) stageLabel.textContent = `STAGE_SPAN // ${stageSpan}`;
+            if (tierLabel) tierLabel.textContent = tier;
+            if (svgStage) {
+                svgStage.setAttribute('width', boxWidth);
+                svgStage.setAttribute('x', 140 - boxWidth / 2);
+            }
+
+            const specTypeEl = document.getElementById('specType');
+            const specPowerEl = document.getElementById('specPower');
+            const specCrewEl = document.getElementById('specCrew');
+            if (specTypeEl) specTypeEl.textContent = selectedEventType;
+            if (specPowerEl) specPowerEl.textContent = `${totalKw} kW (3-Phase Distribution)`;
+            if (specCrewEl) specCrewEl.textContent = `${totalCrew} Production Crew & Engineers`;
+
+            const modsContainer = document.getElementById('specModulesList');
+            if (modsContainer) {
+                modsContainer.innerHTML = '';
+                if (activeMods.length === 0) {
+                    modsContainer.innerHTML = '<span class="text-slate-500">Base Logistical Management Only</span>';
+                } else {
+                    activeMods.forEach(m => {
+                        const pill = document.createElement('span');
+                        pill.className = 'px-2 py-0.5 rounded bg-cyanGlow/15 border border-cyanGlow/30 text-[10px] text-cyanGlow';
+                        pill.textContent = m;
+                        modsContainer.appendChild(pill);
+                    });
+                }
+            }
+        }
+
+        function getFormattedBlueprintSummary() {
+            const guests = capacitySlider ? capacitySlider.value : '500';
+            const powerEl = document.getElementById('specPower');
+            const crewEl = document.getElementById('specCrew');
+            const stageEl = document.getElementById('cadStageLabel');
+            const power = powerEl ? powerEl.textContent : '92 kW';
+            const crew = crewEl ? crewEl.textContent : '33 Staff';
+            const stage = stageEl ? stageEl.textContent : 'STAGE_SPAN // 40 FT x 20 FT';
+            const mods = [];
+            modChecks.forEach(c => { if (c.checked) mods.push(c.getAttribute('data-mod')); });
+
+            return `THE BLUEPRINT EVENT MANAGEMENT // KHULNA\n` +
+                   `----------------------------------------\n` +
+                   `Event Type: ${selectedEventType}\n` +
+                   `Capacity: ${guests} Guests\n` +
+                   `${stage}\n` +
+                   `Est. Power: ${power}\n` +
+                   `Crew Scale: ${crew}\n` +
+                   `Subsystems: ${mods.join(', ') || 'Standard'}\n` +
+                   `Hotlines: +8801788706868 | +8801703700799`;
+        }
+
+        const copySpecBtn = document.getElementById('copySpecBtn');
+        if (copySpecBtn) {
+            copySpecBtn.addEventListener('click', () => {
+                copyTextToClipboard(getFormattedBlueprintSummary(), 'Blueprint Spec Sheet copied to clipboard!');
+            });
+        }
+
+        function transmitSpecToWhatsapp(phoneNumber) {
+            const text = encodeURIComponent(
+                `Hello The Blueprint Event Management (Khulna),\n\nI configured an event blueprint on your website:\n\n` +
+                getFormattedBlueprintSummary() +
+                `\n\nPlease let me know availability and consultation details.`
+            );
+            window.open(`https://wa.me/${phoneNumber}?text=${text}`, '_blank');
+        }
+
+        const transmitBtn1 = document.getElementById('transmitWhatsappBtn1');
+        if (transmitBtn1) {
+            transmitBtn1.addEventListener('click', () => transmitSpecToWhatsapp('8801788706868'));
+        }
+
+        const transmitBtn2 = document.getElementById('transmitWhatsappBtn2');
+        if (transmitBtn2) {
+            transmitBtn2.addEventListener('click', () => transmitSpecToWhatsapp('8801703700799'));
+        }
+
+        // 9. Portfolio Filter Logic
+        const filterBtns = document.querySelectorAll('.portfolio-filter');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-cyanGlow', 'text-obsidian', 'font-bold');
+                    b.classList.add('text-slate-300');
+                });
+                btn.classList.add('active', 'bg-cyanGlow', 'text-obsidian', 'font-bold');
+                btn.classList.remove('text-slate-300');
+
+                const filter = btn.getAttribute('data-filter');
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // 10. Copy Direct Phone Number Buttons (Both Hotlines)
+        const copyPhoneBtn1 = document.getElementById('copyPhoneBtn1');
+        if (copyPhoneBtn1) {
+            copyPhoneBtn1.addEventListener('click', () => {
+                copyTextToClipboard('+8801788706868', 'Hotline 01 (+8801788706868) copied!');
+            });
+        }
+
+        const copyPhoneBtn2 = document.getElementById('copyPhoneBtn2');
+        if (copyPhoneBtn2) {
+            copyPhoneBtn2.addEventListener('click', () => {
+                copyTextToClipboard('+8801703700799', 'Hotline 02 (+8801703700799) copied!');
+            });
+        }
+
+        // 11. Project Brief Form Submission -> Direct WhatsApp Dispatch to Chosen Hotline
+        const projectBriefForm = document.getElementById('projectBriefForm');
+        if (projectBriefForm) {
+            projectBriefForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('clientName').value.trim();
+                const phone = document.getElementById('clientPhone').value.trim();
+                const type = document.getElementById('clientEventType').value;
+                const targetHotline = document.getElementById('targetHotline').value;
+                const venue = document.getElementById('clientVenue').value.trim() || 'TBD (Khulna)';
+                const msg = document.getElementById('clientMessage').value.trim() || 'Requesting consultation.';
+
+                showHudToast(`Project Brief logged! Dispatching to +${targetHotline}...`);
+
+                const waMessage = encodeURIComponent(
+                    `*NEW PROJECT BRIEF // THE BLUEPRINT*\n\n` +
+                    `*Client:* ${name}\n` +
+                    `*Phone:* ${phone}\n` +
+                    `*Event Type:* ${type}\n` +
+                    `*Venue/Date:* ${venue}\n` +
+                    `*Brief:* ${msg}`
+                );
+
+                setTimeout(() => {
+                    window.open(`https://wa.me/${targetHotline}?text=${waMessage}`, '_blank');
+                }, 600);
+            });
+        }
+    </script>
+</body>
+</html>
